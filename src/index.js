@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Layout from './Layout';
+import { Button} from 'element-react';
+import 'element-theme-default';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+ReactDOM.render(<Container />, document.getElementById('root'));
+ReactDOM.render(<Button type="primary">Hello</Button>, document.getElementById('but'));
+//ReactDOM.render(<Header />, document.getElementById('header'));
 serviceWorker.unregister();
+
+
+
+
