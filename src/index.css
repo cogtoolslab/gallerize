@@ -12,16 +12,32 @@ code {
     monospace;
 }
 
-#header{
+.header{
+  display: block;
+  position: relative;
   height: 60px;
   background-color: #FFD139;
-  position: fixed;
-  right: 0;
-  left: 0;
-  z-index: 999;
-    
 }
 
-div{
-  display: block;
+.header a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px; 
+}
+
+header div{
+  position: relative;
+}
+
+.content{
+  position: relative;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 30px;
+}
+.single{
+  display: inline-block;
 }

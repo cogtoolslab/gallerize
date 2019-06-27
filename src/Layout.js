@@ -1,71 +1,122 @@
 import React from 'react';
+import { Select, Layout} from 'element-react';
+import 'element-theme-default';
 import './Layout.css';
-import Draw from './Draw'
-
-class Layout extends React.Component {
+import { resolve, reject, async } from 'q';
+import {txt} from './parsed.csv';
+/**
+ * The Layout Component.
+ * TODO: Need to test the csv loader.
+ * TODO: Need algorithm to keep rendering the correct order for rendering
+ */
+class CardLayout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value: this.props.value,
+      array:[],
+      toRender: [],
+      order: "option1",
+      toRet: []
     };
-  }
 
-  renderDraw(url) {
-    return <Draw value={url} />;
-  }
-
-  readCSV(filePath){
-    var reader = new FileReader();
-    reader.readAsText(filePath);
-    //reader.readAsBinaryString(fileInput.files[0]);
-    reader.onload = loadHandler;
-    reader.error  = errorHandler;
-  }
-  errorHandler(e){
-    if(e.target.error.name == "NotReadableError"){
-      alert('Cannot read File');
-    }
-  }
-
-  loadHandler(event){
-    let csv = event.target.result;
-    processData(csv);
-  }
-
-  processData(csv){
-    let allTextLines = csv.split('\n');
-    for (let i  = 0; i < allTextLines.length; i ++){
-      let row = allTextLines[i].split(';');
-      let col = [];
-      for (let j = 0; j < row.length; j++){
-        col.push(row[j]);
-      }
-
-      attendeesArray.push(col);
-    }
+    this.readCSV("/parser/parsed.csv");
+    this.renderOrder("option1");
   }
 
   render() {
     return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+      <div className="content">
+        {console.log("started rendering")}
+        {console.log(this.state.toRet)}
+        {this.state.toRet}
       </div>
-    );
+    )
+  }
+
+  renderOrder(option){
+    console.log("in renderOrder");
+    //Sort toRender Array
+    if (option === "option1"){
+      this.state.array.sort((a, b) => (parseInt(a.age) > parseInt(b.age)) ? 1 : -1);
+    }
+
+    this.state.array.forEach(function (item){
+      if(item.filename)
+        this.state.toRender.push("/images/" + item.filename);
+    }, this);
+    /* create HTML nodes for render function */
+    this.state.toRender.forEach(function (item){
+      this.state.toRet.push(
+      <div className="single" key={item}>
+        <a href = "https://google.com">
+          <img src= {item} alt="Kid Draw"/>
+        </a>
+      </div>);
+    }, this);
+  }
+
+  readCSV(filePath){
+    console.log("in read CSV");
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", "/parser/parsed.csv", false);
+    rawFile.onreadystatechange = function(){
+      if(rawFile.readyState === 4){
+        if(rawFile.status === 200 || rawFile.status == 0){
+          var allText = rawFile.responseText;
+          //Process Data from text
+          let allTextLines = allText.split('\n');
+          allTextLines.forEach(function (item){
+            let row = item.split(',');
+            let col = {"class": row[0], "age": row[1], "expID": row[2], "sessionID": row[3], "filename": row[4], valid: row[5]};
+            this.state.array.push(col);
+          }, this);
+          console.log("done reading");
+        }
+      }
+    }.bind(this);
+    rawFile.send(null);
   }
 }
 
-export default Layout;
+
+/**
+ * Sort Selector Component.
+ * TODO: Need add some event listener
+ */
+class SelectSort extends React.Component {
+constructor(props) {
+    super(props);
+  
+    this.state = {
+      options: [{
+        value: 'Option1',
+        label: 'Age (Young - Old)'
+      }, {
+        value: 'Option2',
+        label: 'Age (Old - Young)'
+      }, {
+        value: 'Option3',
+        label: 'Date'
+      }, {
+        value: 'Option4',
+        label: 'Class'
+      }],
+      value: ''
+    };
+  }
+  
+  render() {
+    return (
+      <Select placeholder = "sort by ..." value={this.state.value}>
+        {
+          this.state.options.map(el => {
+            return <Select.Option  key={el.value} label={el.label} value={el.value} />
+          })
+        }
+      </Select>
+    )
+  }
+}
+
+export {SelectSort, CardLayout};

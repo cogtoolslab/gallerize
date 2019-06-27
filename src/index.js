@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Layout from './Layout';
-import { Button} from 'element-react';
+import {CardLayout,SelectSort} from './Layout';
 import 'element-theme-default';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<Container />, document.getElementById('root'));
-ReactDOM.render(<Button type="primary">Hello</Button>, document.getElementById('but'));
-//ReactDOM.render(<Header />, document.getElementById('header'));
+
+//ReactDOM.render(<Layout />, document.getElementById('root'));
+ReactDOM.render(<SelectSort> </SelectSort>, document.getElementById('cas'));
+ReactDOM.render(<CardLayout />, document.getElementById('main'));
 serviceWorker.unregister();
 
 
