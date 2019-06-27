@@ -1,13 +1,13 @@
 import React from 'react';
-import { Select, Layout} from 'element-react';
+import { Select, Layout, Card} from 'element-react';
 import 'element-theme-default';
 import './Layout.css';
 import { resolve, reject, async } from 'q';
-import {txt} from './parsed.csv';
+
 /**
  * The Layout Component.
- * TODO: Need to test the csv loader.
- * TODO: Need algorithm to keep rendering the correct order for rendering
+ * TODO: Need to add "render upon scrolling"
+ * TODO: Need some better async control...
  */
 class CardLayout extends React.Component {
   constructor(props) {
@@ -19,7 +19,6 @@ class CardLayout extends React.Component {
       order: "option1",
       toRet: []
     };
-
     this.readCSV("/parser/parsed.csv");
     this.renderOrder("option1");
   }
@@ -43,16 +42,23 @@ class CardLayout extends React.Component {
 
     this.state.array.forEach(function (item){
       if(item.filename)
-        this.state.toRender.push("/images/" + item.filename);
+        this.state.toRender.push("" + item.filename);
     }, this);
     /* create HTML nodes for render function */
-    this.state.toRender.forEach(function (item){
-      this.state.toRet.push(
-      <div className="single" key={item}>
-        <a href = "https://google.com">
-          <img src= {item} alt="Kid Draw"/>
-        </a>
-      </div>);
+    this.state.array.forEach(function (item){
+      if(item.filename)
+        this.state.toRet.push(
+          <Card className="single" key={item.filename} bodyStyle={{ padding: 0 } }>
+            <a href = "https://google.com">
+            <img src= {"/images/"+item.filename} alt="Kid Draw"/>
+            </a>
+            <div style={{ padding: 14 }}>
+              <span>{item.class}</span>
+              <div className="bottom clearfix">
+              <span>age: {item.age}</span>
+              </div>
+            </div>
+          </Card>);
     }, this);
   }
 
