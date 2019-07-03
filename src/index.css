@@ -14,7 +14,9 @@ code {
 
 .header{
   display: block;
-  position: relative;
+  position: sticky;
+  top:0;
+  z-index: 3;
   height: 60px;
   background-color: #FFD139;
 }
@@ -28,10 +30,10 @@ code {
   font-size: 18px; 
 }
 
-header div{
-  position: relative;
+.NUMBERINPUT{
+  display :inline-block;
+  width : 100px;
 }
-
 .content{
   position: relative;
   margin-left: 10%;
