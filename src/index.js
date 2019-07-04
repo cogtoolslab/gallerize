@@ -1,13 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import {Main} from './Main';
-import 'element-theme-default';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import { Main } from "./Main";
+import "element-theme-default";
+import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(<Main />, document.getElementById('main'));
+ReactDOM.render(<Main />, document.getElementById("main"));
 serviceWorker.unregister();
-
-
-
-

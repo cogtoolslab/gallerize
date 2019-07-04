@@ -12,13 +12,13 @@ code {
     monospace;
 }
 
-.header{
+.header {
   display: block;
   position: sticky;
-  top:0;
+  top: 0;
   z-index: 3;
-  height: 60px;
-  background-color: #FFD139;
+  height: 100px;
+  background-color: #ffd139;
 }
 
 .header a {
@@ -27,20 +27,16 @@ code {
   text-align: center;
   padding: 12px;
   text-decoration: none;
-  font-size: 18px; 
+  font-size: 18px;
 }
 
-.NUMBERINPUT{
-  display :inline-block;
-  width : 100px;
-}
-.content{
+.content {
   position: relative;
   margin-left: 10%;
   margin-right: 10%;
   margin-top: 30px;
 }
-.single{
+.single {
   display: inline-block;
   margin-left: 10px;
 }
