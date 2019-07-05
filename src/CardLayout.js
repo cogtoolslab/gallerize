@@ -20,20 +20,13 @@ export class CardLayout extends React.Component {
     };
     // We might want to change this to load from our MongoDB
     this.readCSV("/parser/parsed.csv");
-
+    let nextProps = this.state;
+    this.renderOrder(nextProps);
   }
 
   componentWillReceiveProps(nextProps) {
     console.log("In will receive props");
-
-    this.setState({
-      array: this.state.array,
-      toRender: this.state.toRender,
-      order: nextProps.order,
-      classes: nextProps.classes,
-      ageRange: nextProps.ageRange,
-      toRet: this.state.toRet
-    });
+    this.renderOrder(nextProps);
   }
   
 
@@ -42,7 +35,6 @@ export class CardLayout extends React.Component {
   }
 
   render() {
-    this.renderOrder();
     return (
       <div className="content">
         {console.log("started rendering Layout")}
@@ -75,11 +67,11 @@ export class CardLayout extends React.Component {
     }
   }
 
-  renderOrder() {
+  renderOrder(nextProps) {
     console.log("in render order");
-    let order = this.state.order;
-    let classes = this.state.classes;
-    let range = this.state.ageRange;
+    let order =nextProps.order;
+    let classes = nextProps.classes;
+    let range = nextProps.ageRange;
     console.log(order, classes, range);
     this.state.toRender = [];
 
@@ -118,6 +110,8 @@ export class CardLayout extends React.Component {
         }
       }, this);
     }, this);
+
+    this.setState({toRet: this.state.toRet});
   }
 
   readCSV(filePath) {
@@ -135,14 +129,13 @@ export class CardLayout extends React.Component {
             let row = item.split(",");
             /* we want to skip the first row*/
             if (row[0] !== "class") {
-              let va = row[5] === 1 ? true : false;
               let col = {
                 class: row[0],
                 age: row[1],
                 expID: row[2],
                 sessionID: row[3],
                 filename: row[4],
-                valid: va
+                valid:  parseInt(row[5]) === parseInt("1")
               };
               this.state.array.push(col);
             }

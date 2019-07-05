@@ -1,14 +1,23 @@
 import React from "react";
 import { Switch, Card } from "element-react";
+
 export class SingleCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      item: this.props.input
+      item: this.props.input,
+      value: this.props.input.valid
     };
   }
-
+  componentWillReceiveProps(nextProps) {
+    this.setState({ item: nextProps.input });
+  }
+  toggle(newValue){
+    //send query to database
+    this.setState({value: newValue});
+  }
   render() {
+    console.log(" in single Card");
     return (
       <Card
         className="single"
@@ -16,7 +25,7 @@ export class SingleCard extends React.Component {
         bodyStyle={{ padding: 0 }}
       >
         <a href="https://google.com">
-          {this.state.item.valid ? (
+          {this.state.value ? (
             <img src={"/images/" + this.state.item.filename} alt="Kid Draw" />
           ) : (
             <img
@@ -32,17 +41,14 @@ export class SingleCard extends React.Component {
             <span>age: {this.state.item.age}</span>
             <Switch
               style={{ float: "right" }}
-              value={this.state.item.valid ? "valid" : "invalid"}
               onColor="#13ce66"
               offColor="#ff4949"
-              onValue={100}
-              offValue={0}
-              onChange={value => {
-                console.log(value);
-                this.setState({ value: value });
+              onValue={true}
+              offValue={false}
+              onChange={(value) => {
+                this.toggle(value);
               }}
             />
-            }
           </div>
         </div>
       </Card>

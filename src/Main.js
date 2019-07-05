@@ -23,12 +23,14 @@ class Main extends React.Component {
   handleClassChange(newClass) {
     console.log("in handleClassChange");
 
-    if (newClass === []) {
+    if (newClass.length === 0) {
       console.log("changed to all classes");
+      this.state.classes = this.allClasses;
+    } else {
+      console.log("changed to :", newClass);
+      //this.setState({classes: newClass});
+      this.state.classes = newClass;
     }
-    console.log("changed to :", newClass);
-    this.state.classes = newClass;
-    //this.setState({class : newClass});
   }
 
   handleMax(newMax) {
