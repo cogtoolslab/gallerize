@@ -10,7 +10,7 @@ class Main extends React.Component {
     this.state = {
       order: "default",
       classes: ["tree", "airplane", "bike"],
-      ageRange: "all"
+      ageRange: [0, 100]
     };
   }
   handleOrderChange(newOrder) {
@@ -22,8 +22,8 @@ class Main extends React.Component {
 
   handleClassChange(newClass) {
     console.log("in handleClassChange");
-    
-    if (newClass === ""){
+
+    if (newClass === []) {
       console.log("changed to all classes");
     }
     console.log("changed to :", newClass);
@@ -114,10 +114,10 @@ class SelectClass extends React.Component {
     this.state = {
       options: [
         {
-          value: "Airplane"
+          value: "airplane"
         },
         {
-          value: "Bike"
+          value: "bike"
         },
         {
           value: "bear"
@@ -164,16 +164,16 @@ class SelectSort extends React.Component {
     this.state = {
       options: [
         {
-          value: "Age (Young - Old)"
+          value: "Age (Young - Old) Group By Class"
         },
         {
-          value: "Age (Old - Young)"
+          value: "Age (Old - Young) Group By Class"
         },
         {
-          value: "Class (A - Z)"
+          value: "Age (Young - Old) Group By Age"
         },
         {
-          value: "Class (Z - A)"
+          value: "Age (Old - Young) Group By Age"
         }
       ],
       value: ""

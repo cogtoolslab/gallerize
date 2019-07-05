@@ -20,10 +20,12 @@ export class CardLayout extends React.Component {
     };
     // We might want to change this to load from our MongoDB
     this.readCSV("/parser/parsed.csv");
+
   }
 
   componentWillReceiveProps(nextProps) {
     console.log("In will receive props");
+
     this.setState({
       array: this.state.array,
       toRender: this.state.toRender,
@@ -33,9 +35,9 @@ export class CardLayout extends React.Component {
       toRet: this.state.toRet
     });
   }
+  
 
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log("In should update");
+  componentWillUpdate(){
     return true;
   }
 
@@ -44,6 +46,7 @@ export class CardLayout extends React.Component {
     return (
       <div className="content">
         {console.log("started rendering Layout")}
+        {console.log(this.state.toRet)}
         {this.state.toRet}
       </div>
     );
@@ -74,55 +77,54 @@ export class CardLayout extends React.Component {
 
   renderOrder() {
     console.log("in render order");
-    let order = this.props.order;
-    let classes = this.props.classes;
-    let range = this.props.ageRange;
+    let order = this.state.order;
+    let classes = this.state.classes;
+    let range = this.state.ageRange;
+    console.log(order, classes, range);
     this.state.toRender = [];
 
-    /* Class check first */
+    let class_obj = {}
     this.state.array.forEach(function(item) {
+      /* Class check */
       if (classes.indexOf(item.class) !== -1) {
-        this.state.toRender.push(item);
-      }
-    }, this);
-
-    /* Age Range check second */
-    this.state.toRender.forEach(function(item) {
-      if (!(item.age <= range[1] && item.age >= range[0])) {
-        var index = this.state.toRender.indexOf(item);
-        this.state.toRender.splice(index, 1);
+        /* Age check */
+        if(parseInt(item.age) <= parseInt(range[1]) && parseInt(item.age) >= parseInt(range[0])){
+          var temp = item.class;
+          if (temp in class_obj){
+            class_obj[temp].push(item);
+          }
+          else{
+            class_obj[temp] = [];
+          }
+        }
       }
     }, this);
 
     /* Ordering */
-    if (order === "Age (Young - Old)" || order === "Age (Old - Young)") {
-      this.state.array.sort(this.compare_age.bind(this));
-    } else if (order === "Class (A - Z)" || order === "Class (Z - A)") {
-      this.state.array.sort(this.compare_class.bind(this));
-    }
-
-    this.state.toRender.forEach(function(item) {
-      if (item.filename) {
-        this.state.toRender.push({
-          filename: "" + item.filename,
-          valid: item.valid
-        });
+    Object.keys(class_obj).sort().forEach(function(key) {
+      if (order === "Age (Young - Old)" || order === "Age (Old - Young)") {
+        class_obj[key].sort(this.compare_age.bind(this));
+      } else if (order === "Class (A - Z)" || order === "Class (Z - A)") {
+        class_obj[key].sort(this.compare_class.bind(this));
       }
     }, this);
 
+    /* add to the toRet array */
     this.state.toRet = [];
-
-    this.state.array.forEach(function(item) {
-      if (item.filename) {
-        this.state.toRet.push(<SingleCard input={item} />);
-      }
+    Object.keys(class_obj).sort().forEach(function(key) {
+      class_obj[key].forEach(function(item){
+        if (item.filename) {
+          this.state.toRet.push(<SingleCard input={item} />);
+        }
+      }, this);
     }, this);
   }
 
   readCSV(filePath) {
+    //this.state.array = [];
     console.log("in read CSV");
     var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", "/parser/parsed.csv", false);
+    rawFile.open("GET", filePath, false);
     rawFile.onreadystatechange = function() {
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status == 0) {
