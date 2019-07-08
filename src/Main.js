@@ -8,7 +8,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      order: "default",
+      order: "Age (Young - Old) Group By Class",
       classes: ["tree", "airplane", "bike"],
       ageRange: [0, 100]
     };
@@ -185,8 +185,9 @@ class SelectSort extends React.Component {
   render() {
     return (
       <Select
+        style = {{width:'250px'}}
         onChange={this.handleChange.bind(this)}
-        placeholder="sort by ..."
+        placeholder="sort by..."
         value={this.state.value}
       >
         {this.state.options.map(el => {
