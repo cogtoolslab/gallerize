@@ -38,23 +38,23 @@ export class CardLayout extends React.Component {
     return (
       <div className="content">
         {console.log("started rendering Layout")}
-        {console.log(this.state.toRet)}
         {this.state.toRet}
       </div>
     );
   }
 
   compare_age(a, b) {
-    if (this.state.order === "Age (Young - Old)") {
+    if (this.state.order === "Age (Young - Old) Group By Class") {
       if (parseInt(a.age) - parseInt(b.age) !== 0)
         return parseInt(a.age) - parseInt(b.age);
       return a.class > b.class ? 1 : b.class > a.class ? -1 : 0;
-    } else if (this.state.order === "Age (Old - Young)") {
+    } else if (this.state.order === "Age (Old - Young) Group By Class") {
       if (parseInt(b.age) - parseInt(a.age) !== 0)
         return parseInt(b.age) - parseInt(a.age);
       return a.class > b.class ? 1 : b.class > a.class ? -1 : 0;
     }
   }
+  /* We might not need this any more*/
   compare_class(a, b) {
     if (this.state.order === "Class (A - Z)") {
       if (a.class !== b.class)
@@ -91,12 +91,12 @@ export class CardLayout extends React.Component {
         }
       }
     }, this);
-
+    
     /* Ordering */
     Object.keys(class_obj).sort().forEach(function(key) {
-      if (order === "Age (Young - Old)" || order === "Age (Old - Young)") {
+      if (order === "Age (Young - Old) Group By Class" || order === "Age (Old - Young) Group By Class") {
         class_obj[key].sort(this.compare_age.bind(this));
-      } else if (order === "Class (A - Z)" || order === "Class (Z - A)") {
+      } else if (order === "Class (A - Z) Group By Age" || order === "Class (Z - A) Group By Age") {
         class_obj[key].sort(this.compare_class.bind(this));
       }
     }, this);
@@ -110,8 +110,8 @@ export class CardLayout extends React.Component {
         }
       }, this);
     }, this);
-
-    this.setState({toRet: this.state.toRet});
+    
+    //this.setState({toRet: this.state.toRet});
   }
 
   readCSV(filePath) {
