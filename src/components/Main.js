@@ -60,8 +60,11 @@ class Main extends React.Component {
   render() {
     console.log("in main render");
     return (
-      <Router>
+
       <div>
+              {/* 
+      <Router>
+      */}
         {console.log("Main Started Rendering")}
         <div className="header">
           <div style={{ float: "left", paddingLeft: "50px" }}>
@@ -103,11 +106,15 @@ class Main extends React.Component {
           classes={this.state.classes}
           ageRange={this.state.ageRange}
         />
-      </div>
+        
+      {/*
       <Route path = "/" exact component={TodosList} />
       <Route path = "/edit/:id" component={EditTodo} />
       <Route path = "/create" component={CreateTodo} />
       </Router>
+      */}
+      </div>
+
     );
   }
 }

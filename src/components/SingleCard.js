@@ -1,7 +1,5 @@
 import React from "react";
-import { Switch, Card ,Dialog} from "element-react";
-import {BrowserRouter as Router, Route, Link } from "react-router-dom"
-
+import { Button, Switch, Card, Dialog } from "element-react";
 
 class SingleCard extends React.Component {
   constructor(props) {
@@ -16,12 +14,8 @@ class SingleCard extends React.Component {
     this.setState({ item: nextProps.input });
   }
 
-  toggle(newValue) {
-    //send query to database
-    this.setState({ value: newValue });
-  }
   popUp() {
-    this.setState({ dialogVisible: true })
+    this.setState({ dialogVisible: true });
   }
   render() {
     return (
@@ -30,18 +24,11 @@ class SingleCard extends React.Component {
         key={this.state.item.filename}
         bodyStyle={{ padding: 0 }}
       >
-
-        <a onClick={this.popUp.bind(this)}>
-          {this.state.value ? (
-            <img src={"/images/" + this.state.item.filename} alt="Kid Draw" />
-          ) : (
-              <img
-                src={"/images/" + this.state.item.filename}
-                alt="Kid Draw"
-                style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}
-              />
-            )}
-        </a>
+        <PicLink
+          popUp={this.popUp.bind(this)}
+          valid={this.state.value}
+          filename={this.state.item.filename}
+        />
         <Dialog
           title="Detailed Information"
           size="tiny"
@@ -52,61 +39,91 @@ class SingleCard extends React.Component {
           <Dialog.Body>
             <p> {"File name: " + this.state.item.filename} </p>
             <p> {"Age: " + this.state.item.age}</p>
-            <img style = {{width : '100%', height : '100%'}}src={"/images/" + this.state.item.filename}/>
-            <p> other info? </p>
-
-          </Dialog.Body>
-          <Dialog.Footer className="dialog-footer">
-          <MySwitch
-              value={this.state.value}
-              onChange={this.toggle.bind(this)}
+            <img
+              style={{ width: "100%", height: "100%" }}
+              src={"/images/" + this.state.item.filename}
+              alt={""}
             />
-            <br></br>
-          </Dialog.Footer>
+            <p> other info? </p>
+          </Dialog.Body>
+          <Dialog.Footer className="dialog-footer" />
         </Dialog>
         <div style={{ padding: 14 }}>
-          <span style = {{mariginRight:'10px'}}>{this.state.item.class}</span>
-          <p>age: {this.state.item.age}</p> 
-          <div className="bottom clearfix">
-          
-            <MySwitch
-              value={this.state.value}
-              onChange={this.toggle.bind(this)}
-            />
+          <p style={{ display: "inline" }}>{this.state.item.class}</p>
+          <p style={{ display: "inline", marginLeft: "20px" }}>
+            age: {this.state.item.age}
+          </p>
+          <div style={{ marginTop: "10px" }}>
+            <Button
+              style={{ float: "left" }}
+              size="small"
+              type="success"
+              disabled={this.state.value === 1}
+              onClick={e => {
+                this.setState({ value: 1 });
+              }}
+            >
+              valid
+            </Button>
+            <Button
+              style={{ float: "right" }}
+              size="small"
+              type="danger"
+              disabled={this.state.value === -1}
+              onClick={e => {
+                this.setState({ value: -1 });
+              }}
+            >
+              invalid
+            </Button>
           </div>
+          <br />
         </div>
       </Card>
     );
   }
 }
 
-class MySwitch extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: this.props.value
-    }
-  }
-
+class PicLink extends React.Component {
   render() {
+    //Unchecked images
+    if (this.props.valid === 0) {
+      return (
+        <div>
+          <img
+            onClick={() => {
+              this.props.popUp();
+            }}
+            src={"/images/" + this.props.filename}
+            alt="Kid Draw"
+          />
+        </div>
+      );
+    }
+    //Those have been marked as valid
+    if (this.props.valid === 1) {
+      return (
+        <div>
+          <img
+            src={"/images/" + this.props.filename}
+            alt="Kid Draw"
+            style={{ backgroundColor: "rgba(0, 255, 0, 0.3)" }}
+          />
+        </div>
+      );
+    }
+
+    //Those have been marked as invalid
     return (
-      <Switch
-        style={{ float: 'left'}}
-        width = {75}
-        value={this.state.value}
-        onColor="#13ce66"
-        offColor="#ff4949"
-        onText = "valid"
-        offText = "invalid"
-        onValue={true}
-        offValue={false}
-        onChange={(value) => {
-          this.setState({ value: value });
-          this.props.onChange(value);
-        }}
-      >
-      </Switch>
-    )
+      <div>
+        <img
+          src={"/images/" + this.props.filename}
+          alt="Kid Draw"
+          style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}
+        />
+      </div>
+    );
   }
 }
+
 export { SingleCard };

@@ -135,7 +135,7 @@ export class CardLayout extends React.Component {
                 expID: row[2],
                 sessionID: row[3],
                 filename: row[4],
-                valid:  parseInt(row[5]) === parseInt("1")
+                valid:  0//parseInt(row[5])
               };
               this.state.array.push(col);
             }

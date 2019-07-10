@@ -112,9 +112,11 @@ function serve() {
         else{
           resultArray.push(doc);
         }
-      }, function(){
+      }/*, function(){
         response.render('index', {items: resultArray});
-      });
+      }
+      */
+      );
     });
 
 
@@ -125,6 +127,7 @@ function serve() {
   });
   
 }
+
 function sanity(request, response){
   if (!request.body) {
     return failure(response, '/db/insert needs post request body');
