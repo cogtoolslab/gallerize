@@ -1,5 +1,7 @@
 import React from "react";
 import { Switch, Card ,Dialog} from "element-react";
+import {BrowserRouter as Router, Route, Link } from "react-router-dom"
+
 
 class SingleCard extends React.Component {
   constructor(props) {

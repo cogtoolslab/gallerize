@@ -60,20 +60,10 @@ function serve() {
     app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
     app.post('/db/insert', (request, response) => {
-      if (!request.body) {
-        return failure(response, '/db/insert needs post request body');
-      }
-      log(`got request to insert into ${request.body.colname}`);
+      sanity(request, response);
       
       const databaseName = request.body.dbname;
       const collectionName = request.body.colname;
-      if (!collectionName) {
-        return failure(response, '/db/insert needs collection');
-      }
-      if (!databaseName) {
-        return failure(response, '/db/insert needs database');
-      }
-
       const database = connection.db(databaseName);
       
       // Add collection if it doesn't already exist
@@ -83,7 +73,6 @@ function serve() {
       }
 
       const collection = database.collection(collectionName);
-
       const data = _.omit(request.body, ['colname', 'dbname']);
       // log(`inserting data: ${JSON.stringify(data)}`);
       collection.insert(data, (err, result) => {
@@ -95,6 +84,39 @@ function serve() {
       });
     });
 
+    /* Get Data Query */
+    app.get('/db/get-data', (request, response) => {
+      sanity(request, response);
+
+      const databaseName = request.body.dbname;
+      const collectionName = request.body.colname;
+      const database = connection.db(databaseName);
+      const collection = database.collection(collectionName);
+      var resultArray = []
+
+      const order = request.body.order;
+      const range = request.body.range;
+      const classes = request.body.classes;
+      const validToken = request.body.valid; //-1 only invalids. 0 all. 1 only valids
+
+      var cursor = collection.find({
+        valid: validToken,
+        class: {$in:classes},
+        age: {$gte:range[0], $lte:range[1]}
+      });//.sort(order); NEED MORE LOGIC HERE. OR WE CAN DO SORTING ON FRONT END
+
+      cursor.forEach(function(doc, err){
+        if (error){
+          return failure(response, `error inserting data: ${err}`);
+        }
+        else{
+          resultArray.push(doc);
+        }
+      }, function(){
+        response.render('index', {items: resultArray});
+      });
+    });
+
 
     app.listen(port, () => {
       log(`running at http://localhost:${port}`);
@@ -102,6 +124,21 @@ function serve() {
     
   });
   
+}
+function sanity(request, response){
+  if (!request.body) {
+    return failure(response, '/db/insert needs post request body');
+  }
+  log(`got request to insert into ${request.body.colname}`);
+  
+  const databaseName = request.body.dbname;
+  const collectionName = request.body.colname;
+  if (!collectionName) {
+    return failure(response, '/db/insert needs collection');
+  }
+  if (!databaseName) {
+    return failure(response, '/db/insert needs database');
+  }
 }
 
 serve();

@@ -2,6 +2,7 @@ import React from "react";
 import { Select, Input, Button } from "element-react";
 import { CardLayout } from "./CardLayout";
 import "element-theme-default";
+import {BrowserRouter as Router, Route, Link } from "react-router-dom"
 
 /* This is the main class including the header */
 class Main extends React.Component {
@@ -59,6 +60,7 @@ class Main extends React.Component {
   render() {
     console.log("in main render");
     return (
+      <Router>
       <div>
         {console.log("Main Started Rendering")}
         <div className="header">
@@ -102,6 +104,10 @@ class Main extends React.Component {
           ageRange={this.state.ageRange}
         />
       </div>
+      <Route path = "/" exact component={TodosList} />
+      <Route path = "/edit/:id" component={EditTodo} />
+      <Route path = "/create" component={CreateTodo} />
+      </Router>
     );
   }
 }
