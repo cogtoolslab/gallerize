@@ -2,7 +2,8 @@ import React from "react";
 import { Select, Input, Button } from "element-react";
 import { CardLayout } from "./CardLayout";
 import "element-theme-default";
-import {BrowserRouter as Router, Route, Link } from "react-router-dom"
+import axios from "axios";
+
 
 /* This is the main class including the header */
 class Main extends React.Component {
@@ -48,8 +49,10 @@ class Main extends React.Component {
     //this.setState({ageRange : this.state.ageRange});
   }
 
-  submit() {
+  submit(e) {
+    e.preventDefault();
     console.log("in submit, the state is now: ", this.state);
+
     this.setState({
       order: this.state.order,
       classes: this.state.classes,
@@ -62,9 +65,6 @@ class Main extends React.Component {
     return (
 
       <div>
-              {/* 
-      <Router>
-      */}
         {console.log("Main Started Rendering")}
         <div className="header">
           <div style={{ float: "left", paddingLeft: "50px" }}>
@@ -106,13 +106,6 @@ class Main extends React.Component {
           classes={this.state.classes}
           ageRange={this.state.ageRange}
         />
-        
-      {/*
-      <Route path = "/" exact component={TodosList} />
-      <Route path = "/edit/:id" component={EditTodo} />
-      <Route path = "/create" component={CreateTodo} />
-      </Router>
-      */}
       </div>
 
     );

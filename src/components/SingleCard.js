@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Switch, Card, Dialog } from "element-react";
+import { Button, Card, Dialog } from "element-react";
 
 class SingleCard extends React.Component {
   constructor(props) {

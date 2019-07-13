@@ -9,13 +9,15 @@ const colors = require("colors/safe");
 const app = express();
 const MongoClient = mongodb.MongoClient;
 const port = process.env.port || 7000;
-const mongoCreds = require('./auth.json');
+const mongoCreds = require("./auth.json");
 //const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@localhost:27017`;
-//const mongoURL = `mongodb//yiy142:1997728yy@gallerize-pfiji.mongodb.net/test?retryWrites=true&w=majority`;
-const mongoURL = `mongodb://localhost:27017`;
-
-const mongoose = require('mongoose');
-const cors = require('cors');
+//const mongoURL = `mongodb//${mongoCreds.user}:${mongoCreds.password}@gallerize-pfiji.mongodb.net/test?retryWrites=true&w=majority`;
+//const mongoURL = `mongodb://localhost:27017`;
+const mongoURL = `mongodb+srv://${mongoCreds.user}:${
+  mongoCreds.password
+}@gallerize-pfiji.mongodb.net/test?retryWrites=true&w=majority`;
+const mongoose = require("mongoose");
+const cors = require("cors");
 
 function makeMessage(text) {
   return `${colors.blue("[store]")} ${text}`;
@@ -42,21 +44,25 @@ function success(response, text) {
 }
 
 function mongoConnectWithRetry(delayInMilliseconds, callback) {
-  //mongoose.connect(mongoURL, { useNewUrlParser: true, useCreateIndex: true }, (err, connection) => {
-  MongoClient.connect(mongoURL, { useNewUrlParser: true}, (err, connection) => {
-    if (err) {
-      console.error(`Error connecting to MongoDB: ${err}`);
-      setTimeout(
-        () => mongoConnectWithRetry(delayInMilliseconds, callback),
-        delayInMilliseconds
-      );
-    } else {
-      log("connected succesfully to mongodb");
-      callback(connection);
+  mongoose.connect(
+    mongoURL,
+    { useNewUrlParser: true, useCreateIndex: true },
+    (err, connection) => {
+      //MongoClient.connect(mongoURL, { useNewUrlParser: true}, (err, connection) => {
+      if (err) {
+        console.error(`Error connecting to MongoDB: ${err}`);
+        setTimeout(
+          () => mongoConnectWithRetry(delayInMilliseconds, callback),
+          delayInMilliseconds
+        );
+      } else {
+        log("connected succesfully to mongodb");
+        callback(connection);
+      }
     }
-  });
+  );
 }
-let Draw = require('./models/draw.model');
+let Draw = require("./models/draw.model");
 function serve() {
   mongoConnectWithRetry(2000, connection => {
     app.use(cors());
@@ -104,47 +110,33 @@ function serve() {
     });
 
     app.post("/db/add", (req, res) => {
-      console.log(req.body);
+      console.log(`In Add. Body is: ${req.body}`);
 
       const filename = req.body.filename;
       const age = req.body.age;
       const valid = req.body.valid;
       const _class = req.body.class;
 
-      const newDraw = new Draw({ filename: filename, age: age, valid: valid, class: _class });
-      
-      /* If we want to use mongoose */ 
-      newDraw.save().then(() => res.json('new Draw added!'))
-        .catch(err => res.status(400).json('Error: ' + err));;
-      
-     /*
-     const databaseName = req.body.dbname;
-     const collectionName = req.body.colname;
-     
-     const database = connection.db(databaseName);
-     const collection = database.collection(collectionName);
-     
-     if (!database.collection(collectionName)) {
-      console.log("creating collection " + collectionName);
-      database.createCollection(collectionName);
-    }
+      const newDraw = new Draw({
+        filename: filename,
+        age: age,
+        valid: valid,
+        class: _class
+      });
 
-     collection.insert(newDraw, (err, result) => {
-      if (err) {
-        return failure(res, `error inserting data: ${err}`);
-      } else {
-        return success(
-          res,
-          `successfully inserted data. result: ${JSON.stringify(result)}`
-        );
-      }
+      newDraw
+        .save()
+        .then(() => res.json("new Draw added!"))
+        .catch(err => res.status(400).json("Error: " + err));
     });
-    */
-    }
     
-    );
     /* Get Data Query */
     app.get("/db/get-data", (request, response) => {
+      Draw.find()
+        .then(users => response.json(users))
+        .catch(err => response.status(400).json("Error: " + err));
+
+      /*
       if (!request.body) {
         return failure(response, "/db/insert needs post request body");
       }
@@ -200,9 +192,8 @@ function serve() {
         }); //.sort(order); NEED MORE LOGIC HERE. OR WE CAN DO SORTING ON FRONT END
       }
       cursor.forEach((item) => { resultArray.push(item); });
+      */
     });
-
-
 
     app.listen(port, () => {
       log(`running at http://localhost:${port}`);

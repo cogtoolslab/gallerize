@@ -1,5 +1,7 @@
 import React from "react";
 import { SingleCard } from "./SingleCard";
+import axios from "axios";
+
 
 /**
  * The Layout Component. Did not use any async calls.
@@ -16,12 +18,27 @@ export class CardLayout extends React.Component {
       order: this.props.order,
       classes: this.props.classes,
       ageRange: this.props.ageRange,
+      validToken : this.props.validToken,
       toRet: []
     };
     // We might want to change this to load from our MongoDB
     this.readCSV("/parser/parsed.csv");
     let nextProps = this.state;
     this.renderOrder(nextProps);
+  }
+
+  componetDidMount(){
+    axios.get('http://localhost:7000/db/get-data', this.state)
+    .then(response => {
+      if(response.data.length > 0){
+        this.setState({
+          toRet: response.data
+        });
+      }
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -121,7 +138,7 @@ export class CardLayout extends React.Component {
     rawFile.open("GET", filePath, false);
     rawFile.onreadystatechange = function() {
       if (rawFile.readyState === 4) {
-        if (rawFile.status === 200 || rawFile.status == 0) {
+        if (rawFile.status === 200 || rawFile.status === 0) {
           var allText = rawFile.responseText;
           //Process Data from text
           let allTextLines = allText.split("\n");
