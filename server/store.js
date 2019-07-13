@@ -113,11 +113,11 @@ function serve() {
 
       const newDraw = new Draw({ filename: filename, age: age, valid: valid, class: _class });
       
-      /* If we want to use mongoose
+      /* If we want to use mongoose */ 
       newDraw.save().then(() => res.json('new Draw added!'))
         .catch(err => res.status(400).json('Error: ' + err));;
-      */
-     
+      
+     /*
      const databaseName = req.body.dbname;
      const collectionName = req.body.colname;
      
@@ -139,6 +139,7 @@ function serve() {
         );
       }
     });
+    */
     }
     
     );
