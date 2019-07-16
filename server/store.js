@@ -112,16 +112,11 @@ function serve() {
     app.post("/db/add", (req, res) => {
       console.log(`In Add. Body is: ${req.body}`);
 
-      const filename = req.body.filename;
-      const age = req.body.age;
-      const valid = req.body.valid;
-      const _class = req.body.class;
-
       const newDraw = new Draw({
-        filename: filename,
-        age: age,
-        valid: valid,
-        class: _class
+        filename: req.body.filename,
+        age: req.body.age,
+        valid: req.body.valid,
+        class: req.body.class
       });
 
       newDraw

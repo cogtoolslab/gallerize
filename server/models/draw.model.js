@@ -16,7 +16,7 @@ const drawSchema = new Schema({
         type: Number,
         require: true
     },
-    class: {
+    _class: {
         type: String,
         required: true
     }
