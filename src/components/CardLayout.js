@@ -21,35 +21,49 @@ export class CardLayout extends React.Component {
       validToken : this.props.validToken,
       toRet: []
     };
+    /*
     // We might want to change this to load from our MongoDB
     this.readCSV("/parser/parsed.csv");
     let nextProps = this.state;
     this.renderOrder(nextProps);
+    */
+   this.fetch(this.props);
   }
 
-  componetDidMount(){
-    axios.get('http://localhost:7000/db/get-data', this.state)
+//componentDidMount
+  fetch(filter){
+    console.log("in fetch");
+    axios.get('http://localhost:7000/db/get-data', filter)
     .then(response => {
       if(response.data.length > 0){
+
+        //Need some sorting. Should we do backend or front-end? 
+        let toRet = response.data.map(curDraw =>{
+          return <SingleCard input={curDraw} key={curDraw._id}/>;
+        });
+        console.log("response date is: ", toRet);
+
         this.setState({
-          toRet: response.data
+          toRet: toRet
         });
       }
     })
     .catch((error)=>{
       console.log(error);
-    })
+    });
   }
 
   componentWillReceiveProps(nextProps) {
     console.log("In will receive props");
-    this.renderOrder(nextProps);
+    this.fetch(nextProps);
+    //this.renderOrder(nextProps);
   }
   
 
   componentWillUpdate(){
     return true;
   }
+
 
   render() {
     return (

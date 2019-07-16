@@ -1,9 +1,7 @@
 import React from "react";
-import { Select, Input, Button } from "element-react";
+import { Select, Input, Button, Radio} from "element-react";
 import { CardLayout } from "./CardLayout";
 import "element-theme-default";
-import axios from "axios";
-
 
 /* This is the main class including the header */
 class Main extends React.Component {
@@ -12,14 +10,16 @@ class Main extends React.Component {
     this.state = {
       order: "Age (Young - Old) Group By Class",
       classes: ["tree", "airplane", "bike"],
-      ageRange: [0, 100]
+      ageRange: [0, 100],
+      valid: 2
     };
+
+    this.tempState = this.state;
+
   }
   handleOrderChange(newOrder) {
-    console.log("in handleOrderChange");
-    console.log("changed to " + newOrder);
-    this.state.order = newOrder;
-    //this.setState({option : newOrder});
+    console.log("in handleOrderChange, changed to " + newOrder);
+    this.tempState.order = newOrder;
   }
 
   handleClassChange(newClass) {
@@ -27,26 +27,25 @@ class Main extends React.Component {
 
     if (newClass.length === 0) {
       console.log("changed to all classes");
-      this.state.classes = this.allClasses;
+      this.tempState.classes = this.allClasses;
     } else {
       console.log("changed to :", newClass);
-      //this.setState({classes: newClass});
-      this.state.classes = newClass;
+      this.tempState.classes = newClass;
     }
+  }
+  handleValidChange(newValue) {
+    console.log("in handleValidChange");
+    this.tempState.valid = newValue;
   }
 
   handleMax(newMax) {
-    console.log("in handleMax");
-    console.log("changed to " + newMax);
-    this.state.ageRange = [this.state.ageRange[0], newMax];
-    //this.setState({ageRange : this.state.ageRange});
+    console.log("in handleMax, changed to " + newMax);
+    this.tempState.ageRange = [this.state.ageRange[0], newMax];
   }
 
   handleMin(newMin) {
-    console.log("in handleMin");
-    console.log("changed to " + newMin);
-    this.state.ageRange = [newMin, this.state.ageRange[1]];
-    //this.setState({ageRange : this.state.ageRange});
+    console.log("in handleMin, changed to " + newMin);
+    this.tempState.ageRange = [newMin, this.state.ageRange[1]];
   }
 
   submit(e) {
@@ -54,9 +53,9 @@ class Main extends React.Component {
     console.log("in submit, the state is now: ", this.state);
 
     this.setState({
-      order: this.state.order,
-      classes: this.state.classes,
-      ageRange: this.state.ageRange
+      order: this.tempState.order,
+      classes: this.tempState.classes,
+      ageRange: this.tempState.ageRange
     });
   }
 
@@ -96,7 +95,8 @@ class Main extends React.Component {
               placeholder="max age"
             />
             <SelectClass onSelectChange={this.handleClassChange.bind(this)} />
-            <Button type="primary" onClick={this.submit.bind(this)}>
+            <SelectValid validChange = {this.handleValidChange.bind(this)}/>
+            <Button style = {{marginLeft: '50px'}} type="primary" onClick={this.submit.bind(this)}>
               Submit
             </Button>
           </div>
@@ -105,6 +105,7 @@ class Main extends React.Component {
           order={this.state.order}
           classes={this.state.classes}
           ageRange={this.state.ageRange}
+          validToken = {this.state.valid}
         />
       </div>
 
@@ -112,6 +113,31 @@ class Main extends React.Component {
   }
 }
 
+class SelectValid extends React.Component{
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      value: 2
+    }
+  }
+  
+  onChange(value) {
+    this.setState({ value });
+    this.props.validChange(value);
+  }
+  
+  render() {
+    return (
+      <Radio.Group style = {{marginLeft: '50px'}} value={this.state.value} onChange={this.onChange.bind(this)}>
+        <Radio value="-1">Invalid</Radio>
+        <Radio value="0">Unchecked</Radio>
+        <Radio value="1">Valid</Radio>
+        <Radio value="2">ALL</Radio>
+      </Radio.Group>
+    )
+  }
+}
 /**
  * Selector Component in header.
  */
