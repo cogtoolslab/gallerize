@@ -24,6 +24,6 @@ const drawSchema = new Schema({
         timestamps: true,
     });
 
-const Draw = mongoose.model('Draw', drawSchema);
+const Draw = mongoose.model('Draw', drawSchema, 'CustomeCollectionName');
 
 module.exports = Draw;

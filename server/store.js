@@ -15,7 +15,7 @@ const mongoCreds = require("./auth.json");
 //const mongoURL = `mongodb://localhost:27017`;
 const mongoURL = `mongodb+srv://${mongoCreds.user}:${
   mongoCreds.password
-}@gallerize-pfiji.mongodb.net/test?retryWrites=true&w=majority`;
+  }@gallerize-pfiji.mongodb.net/test?retryWrites=true&w=majority`;
 const mongoose = require("mongoose");
 const cors = require("cors");
 
@@ -110,13 +110,13 @@ function serve() {
     });
 
     app.post("/db/add", (req, res) => {
-      console.log(`In Add. Body is: ${req.body}`);
+      console.log(`In Add.`);
 
       const newDraw = new Draw({
         filename: req.body.filename,
         age: req.body.age,
         valid: req.body.valid,
-        class: req.body.class
+        _class: req.body.class
       });
 
       newDraw
@@ -126,38 +126,88 @@ function serve() {
     });
 
     /* Update Data Query */
-    app.get("/db/update-data", (request, response) => {
+    app.post("/db/update-data", (request, response) => {
       Draw.findOneAndUpdate({
         filename: request.body.filename
       },
-      {valid: request.body.valid}
+        { valid: request.body.valid }
       )
-      .then(draws => response.json(draws))
-      .catch(err => response.status(400).json("Error: " + err));
+        .then(() => response.send("valid updated!"))
+        .catch(err => response.status(400).json("Error: " + err));
     }
     );
 
     /* Get Data Query */
     app.get("/db/get-data", (request, response) => {
+      log('In Get Data Req');
       const order = request.body.order;
       const range = request.body.range;
       const classes = request.body.classes;
       const validToken = request.body.valid;      //-1 only invalids. 0 unchecked. 1 only valids. 2 for ALL
-      let valids = [validToken]
-      if (validToken === 2){
-        valids = [-1,0,1]
+      let valids = [validToken];
+      if (validToken === 2) {
+        valids = [-1, 0, 1]
       }
-
+      log(classes);
+      log(valids);
+      /*
       Draw.find({
-        class: { $in: classes },
+        _class: { $in: classes },
         age: { $gte: range[0], $lte: range[1] },
         valid: { $in: valids}
       })
+      .group({
+        _id: '$_class'
+      })
       .sort(
-        {age: -1}
+        {age: -1} //need to change this order
       )
         .then(draws => response.json(draws))
         .catch(err => response.status(400).json("Error: " + err));
+        */
+
+      var sortObject = {
+      };
+      if (order === "Age (Young - Old) Group By Class"){
+        sortObject.age = 1;
+        sortObject._class = 1;
+      }
+      else if( order === "Age (Old - Young) Group By Class") {
+        sortObject.age = -1;
+        sortObject._class = 1;
+      } else if (order === "Class (A - Z) Group By Age"){
+        sortObject._class = 1;
+        sortObject.age = 1;
+      }
+      else if( order === "Class (Z - A) Group By Age") {
+        sortObject._class = -1;
+        sortObject.age = 1;
+      }
+      
+      Draw.aggregate([
+        {
+          $match: {
+            _class: { $in: classes },
+            age: { $gte: range[0], $lte: range[1] },
+            valid: { $in: valids }
+          }
+        },
+        {
+          $sort: sortObject
+        }
+      ],
+        function (err, result) {
+          if (err) {
+            response.status(400).json("Error: " + err);
+          }
+          else {
+            response.json(result)
+          }
+        }
+      );
+      //.then(draws => response.json(draws))
+      //.catch(err => response.status(400).json("Error: " + err));
+
     });
 
     app.listen(port, () => {
