@@ -124,70 +124,40 @@ function serve() {
         .then(() => res.json("new Draw added!"))
         .catch(err => res.status(400).json("Error: " + err));
     });
-    
+
+    /* Update Data Query */
+    app.get("/db/update-data", (request, response) => {
+      Draw.findOneAndUpdate({
+        filename: request.body.filename
+      },
+      {valid: request.body.valid}
+      )
+      .then(draws => response.json(draws))
+      .catch(err => response.status(400).json("Error: " + err));
+    }
+    );
+
     /* Get Data Query */
     app.get("/db/get-data", (request, response) => {
-      Draw.find()
-        .then(users => response.json(users))
-        .catch(err => response.status(400).json("Error: " + err));
-
-      /*
-      if (!request.body) {
-        return failure(response, "/db/insert needs post request body");
-      }
-      log(`got request to insert into ${request.body.colname}`);
-
-      const databaseName = request.body.dbname;
-      const collectionName = request.body.colname;
-      if (!collectionName) {
-        return failure(response, "/db/insert needs collection");
-      }
-      if (!databaseName) {
-        return failure(response, "/db/insert needs database");
-      }
-
-      const database = connection.db(databaseName);
-      const collection = database.collection(collectionName);
-      var resultArray = [];
-
       const order = request.body.order;
       const range = request.body.range;
       const classes = request.body.classes;
-      //-1 only invalids. 0 unchecked. 1 only valids. 2 for ALL
-      const validToken = request.body.valid;
-      let cursor;
-      if (validToken === 2) {
-        cursor = collection.find({
-          class: { $in: classes },
-          age: { $gte: range[0], $lte: range[1] }
-        }, (err, result) => {
-          if (err) {
-            return failure(response, `error inserting data: ${err}`);
-          } else {
-            return success(
-              response,
-              `successfully find data. result: ${JSON.stringify(result)}`
-            );
-          }
-        }); //.sort(order); NEED MORE LOGIC HERE. OR WE CAN DO SORTING ON FRONT END
-      } else {
-        cursor = collection.find({
-          valid: validToken,
-          class: { $in: classes },
-          age: { $gte: range[0], $lte: range[1] }
-        }, (err, result) => {
-          if (err) {
-            return failure(response, `error inserting data: ${err}`);
-          } else {
-            return success(
-              response,
-              `successfully find data. result: ${JSON.stringify(result)}`
-            );
-          }
-        }); //.sort(order); NEED MORE LOGIC HERE. OR WE CAN DO SORTING ON FRONT END
+      const validToken = request.body.valid;      //-1 only invalids. 0 unchecked. 1 only valids. 2 for ALL
+      let valids = [validToken]
+      if (validToken === 2){
+        valids = [-1,0,1]
       }
-      cursor.forEach((item) => { resultArray.push(item); });
-      */
+
+      Draw.find({
+        class: { $in: classes },
+        age: { $gte: range[0], $lte: range[1] },
+        valid: { $in: valids}
+      })
+      .sort(
+        {age: -1}
+      )
+        .then(draws => response.json(draws))
+        .catch(err => response.status(400).json("Error: " + err));
     });
 
     app.listen(port, () => {
