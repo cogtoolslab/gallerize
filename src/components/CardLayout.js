@@ -14,36 +14,26 @@ export class CardLayout extends React.Component {
     super(props);
     this.state = {
       array: [],
-      toRender: [],
       order: this.props.order,
       classes: this.props.classes,
       ageRange: this.props.ageRange,
       validToken: this.props.validToken,
       toRet: []
     };
-    //this.fetch(this.props);
   }
 
-  componentDidMount(){
-    this.fetch(this.props);
+  componentWillReceiveProps(nextProps) {
+    this.fetch(nextProps);
   }
+
   fetch(filter) {
-    console.log(filter.order);
-    axios.get('http://localhost:7000/db/get-data', {
-      "order": filter.order,
-      "ageRange": filter.ageRange,
-      "classes": filter.classes,
-      "valid": filter.validToken
-    })
+    console.log("in fetch, filter is: ", filter);
+    axios.post('http://localhost:7000/db/get-data', filter)
       .then(response => {
         if (response.data.length > 0) {
-
-          //Need some sorting. Should we do backend or front-end? 
           let toRet = response.data.map(curDraw => {
             return <SingleCard input={curDraw} key={curDraw._id} />;
           });
-          console.log("response date is: ", toRet);
-
           this.setState({
             toRet: toRet
           });
@@ -54,27 +44,17 @@ export class CardLayout extends React.Component {
       });
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("In will receive props");
-    this.fetch(nextProps);
-    //this.renderOrder(nextProps);
-  }
-
-
-  componentWillUpdate() {
-    return true;
-  }
-
-
   render() {
+    console.log("in render, toRet is now: ", this.state.toRet);
     return (
       <div className="content">
         {console.log("started rendering Layout")}
         {this.state.toRet}
+
       </div>
     );
   }
-
+/*
   compare_age(a, b) {
     if (this.state.order === "Age (Young - Old) Group By Class") {
       if (parseInt(a.age) - parseInt(b.age) !== 0)
@@ -87,7 +67,7 @@ export class CardLayout extends React.Component {
     }
   }
 
-  /* We might not need this any more*/
+  // We might not need this any more
   compare_class(a, b) {
     if (this.state.order === "Class (A - Z)") {
       if (a.class !== b.class)
@@ -110,9 +90,9 @@ export class CardLayout extends React.Component {
 
     let class_obj = {}
     this.state.array.forEach(function (item) {
-      /* Class check */
+      
       if (classes.indexOf(item.class) !== -1) {
-        /* Age check */
+        
         if (parseInt(item.age) <= parseInt(range[1]) && parseInt(item.age) >= parseInt(range[0])) {
           var temp = item.class;
           if (temp in class_obj) {
@@ -125,7 +105,7 @@ export class CardLayout extends React.Component {
       }
     }, this);
 
-    /* Ordering */
+    
     Object.keys(class_obj).sort().forEach(function (key) {
       if (order === "Age (Young - Old) Group By Class" || order === "Age (Old - Young) Group By Class") {
         class_obj[key].sort(this.compare_age.bind(this));
@@ -134,7 +114,6 @@ export class CardLayout extends React.Component {
       }
     }, this);
 
-    /* add to the toRet array */
     this.state.toRet = [];
     Object.keys(class_obj).sort().forEach(function (key) {
       class_obj[key].forEach(function (item) {
@@ -160,7 +139,7 @@ export class CardLayout extends React.Component {
           let allTextLines = allText.split("\n");
           allTextLines.forEach(function (item) {
             let row = item.split(",");
-            /* we want to skip the first row*/
+    
             if (row[0] !== "class") {
               let col = {
                 class: row[0],
@@ -179,4 +158,5 @@ export class CardLayout extends React.Component {
     }.bind(this);
     rawFile.send(null);
   }
+  */
 }

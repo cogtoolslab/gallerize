@@ -2,21 +2,37 @@ import React from "react";
 import { Select, Input, Button, Radio} from "element-react";
 import { CardLayout } from "./CardLayout";
 import "element-theme-default";
+import axios from "axios";
 
 /* This is the main class including the header */
 class Main extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       order: "Age (Young - Old) Group By Class",
-      classes: ["tree", "airplane", "bike"],
+      allClasses: [],
+      classes: [],
       ageRange: [0, 100],
       valid: 2
     };
-
     this.tempState = this.state;
-
   }
+
+  componentDidMount(){
+    axios.get('http://localhost:7000/db/get-classes')
+    .then(response => {
+      var classes = response.data;
+      console.log("done fetching all classes!");
+      console.log(classes);
+      this.setState({allClasses: classes, classes: classes});
+    }
+    )
+    .catch((error)=>{
+      console.log(error);
+    });
+  }
+
   handleOrderChange(newOrder) {
     console.log("in handleOrderChange, changed to " + newOrder);
     this.tempState.order = newOrder;
@@ -24,10 +40,9 @@ class Main extends React.Component {
 
   handleClassChange(newClass) {
     console.log("in handleClassChange");
-
     if (newClass.length === 0) {
       console.log("changed to all classes");
-      this.tempState.classes = this.allClasses;
+      this.tempState.classes = this.state.allClasses;
     } else {
       console.log("changed to :", newClass);
       this.tempState.classes = newClass;
@@ -47,11 +62,9 @@ class Main extends React.Component {
     console.log("in handleMin, changed to " + newMin);
     this.tempState.ageRange = [newMin, this.state.ageRange[1]];
   }
-
   submit(e) {
     e.preventDefault();
     console.log("in submit, the state is now: ", this.state);
-
     this.setState({
       order: this.tempState.order,
       classes: this.tempState.classes,
@@ -94,7 +107,7 @@ class Main extends React.Component {
               type="number"
               placeholder="max age"
             />
-            <SelectClass onSelectChange={this.handleClassChange.bind(this)} />
+            <SelectClass allClasses = {this.state.allClasses} onSelectChange={this.handleClassChange.bind(this)}/>
             <SelectValid validChange = {this.handleValidChange.bind(this)}/>
             <Button style = {{marginLeft: '50px'}} type="primary" onClick={this.submit.bind(this)}>
               Submit
@@ -138,36 +151,27 @@ class SelectValid extends React.Component{
     )
   }
 }
+
+
 /**
  * Selector Component in header.
  */
 class SelectClass extends React.Component {
+
   constructor(props) {
     super(props);
-
     this.state = {
-      options: [
-        {
-          value: "airplane"
-        },
-        {
-          value: "bike"
-        },
-        {
-          value: "bear"
-        },
-        {
-          value: "bird"
-        },
-        {
-          value: "boat"
-        }
-      ],
+      options: [],
       value: []
     };
   }
+  componentWillReceiveProps(nextprops){
+    this.setState({options: nextprops.allClasses.map(each => {return {value: each}})});
+  }
 
   render() {
+    console.log("render class picker");
+    console.log(this.state.options);
     return (
       <Select
         multiple={true}
@@ -186,7 +190,6 @@ class SelectClass extends React.Component {
 
   handleChange(event) {
     console.log("class selection changed! ");
-    console.log(event);
     this.props.onSelectChange(event);
   }
 }
@@ -196,6 +199,7 @@ class SelectSort extends React.Component {
     super(props);
 
     this.state = {
+      
       options: [
         {
           value: "Age (Young - Old) Group By Class"

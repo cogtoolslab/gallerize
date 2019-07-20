@@ -11,16 +11,17 @@ class SingleCard extends React.Component {
       dialogVisible: false
     };
   }
+/*  
   componentWillReceiveProps(nextProps) {
     this.setState({ item: nextProps.input });
   }
+*/
   update(newValid){
     console.log("in update");
-    axios.post('http://localhost:7000/db/update-data', {"valid":newValid, "filename": this.item.filename})
+    axios.put('http://localhost:7000/db/update-data', {"valid":newValid, "filename": this.state.item.filename})
     .then(response => {
       if(response.status === 200){
         console.log("updated to ", newValid);
-
         this.setState({
           value: newValid
         });
@@ -35,6 +36,7 @@ class SingleCard extends React.Component {
     this.setState({ dialogVisible: true });
   }
   render() {
+    console.log("started rendering single card");
     return (
       <Card
         className="single"
@@ -66,7 +68,7 @@ class SingleCard extends React.Component {
           <Dialog.Footer className="dialog-footer" />
         </Dialog>
         <div style={{ padding: 14 }}>
-          <p style={{ display: "inline" }}>{this.state.item.class}</p>
+          <p style={{ display: "inline" }}>{this.state.item._class}</p>
           <p style={{ display: "inline", marginLeft: "20px" }}>
             age: {this.state.item.age}
           </p>

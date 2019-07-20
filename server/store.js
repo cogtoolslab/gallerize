@@ -86,34 +86,53 @@ function serve() {
     });
 
     /* Update Data Query */
-    app.post("/db/update-data", (request, response) => {
+    app.put("/db/update-data", (request, response) => {
       Draw.findOneAndUpdate({
         filename: request.body.filename
       },
-        { valid: request.body.valid }
-      )
-        .then(() => esponse.status(200).send("valid updated!"))
+        {valid: request.body.valid },
+        {new: true},
+        (error, result)=>{
+          if(error){
+            response.status(400).json("Error: " + err);
+          }
+          else{
+            response.status(200).send("valid updated!");
+          }
+        }
+      );
+      /*
+        .then(() => response.status(200).send("valid updated!"))
         .catch(err => response.status(400).json("Error: " + err));
+        */
     });
 
+    /* Get all classes query*/
+    app.get("/db/get-classes", (request, response) => {
+      Draw.find().distinct('_class',
+        function (err, result) {
+          if (err) {
+            response.status(400).json("Error: " + err);
+          }
+          else {
+            response.status(200).json(result.sort());
+          }
+        }
+      );
+    });
+    
     /* Get Data Query */
-    app.get("/db/get-data", (request, response) => {
-      console.log('In Get Data Req');
+    app.post("/db/get-data", (request, response) => {
       console.log(request.body);
       const order = request.body.order;
       const range = request.body.ageRange;
       const classes = request.body.classes;
-      const validToken = request.body.valid;      //-1 only invalids. 0 unchecked. 1 only valids. 2 for ALL
+      const validToken = request.body.validToken;      //-1 only invalids. 0 unchecked. 1 only valids. 2 for ALL
+      
       let valids = [validToken];
       if (validToken === 2) {
-        valids = [-1, 0, 1]
+        valids = [-1, 0, 1];
       }
-
-      log(classes);
-      log(valids);
-      log(range);
-      log(order);
-
       var sortObject = {
       };
       if (order === "Age (Young - Old) Group By Class"){
@@ -131,7 +150,6 @@ function serve() {
         sortObject._class = -1;
         sortObject.age = 1;
       }
-
       Draw.aggregate([
         {
           $match: {
@@ -153,8 +171,6 @@ function serve() {
           }
         }
       );
-      //.then(draws => response.json(draws))
-      //.catch(err => response.status(400).json("Error: " + err));
 
     });
 
