@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Card, Dialog } from "element-react";
+import axios from "axios";
 
 class SingleCard extends React.Component {
   constructor(props) {
@@ -12,6 +13,22 @@ class SingleCard extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     this.setState({ item: nextProps.input });
+  }
+  update(newValid){
+    console.log("in update");
+    axios.post('http://localhost:7000/db/update-data', {"valid":newValid, "filename": this.item.filename})
+    .then(response => {
+      if(response.status === 200){
+        console.log("updated to ", newValid);
+
+        this.setState({
+          value: newValid
+        });
+      }
+    })
+    .catch((error)=>{
+      console.log(error);
+    });
   }
 
   popUp() {
@@ -60,7 +77,7 @@ class SingleCard extends React.Component {
               type="success"
               disabled={this.state.value === 1}
               onClick={e => {
-                this.setState({ value: 1 });
+                this.update(1);
               }}
             >
               valid
@@ -71,7 +88,7 @@ class SingleCard extends React.Component {
               type="danger"
               disabled={this.state.value === -1}
               onClick={e => {
-                this.setState({ value: -1 });
+                this.update(-1);
               }}
             >
               invalid

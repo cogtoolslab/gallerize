@@ -70,48 +70,8 @@ function serve() {
     //app.use(bodyParser.json({ limit: "50mb" })); // added bll
     //app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
-    app.post("/db/insert", (request, response) => {
-      if (!request.body) {
-        return failure(response, "/db/insert needs post request body");
-      }
-      log(`got request to insert into ${request.body.colname}`);
-
-      const databaseName = request.body.dbname;
-      const collectionName = request.body.colname;
-
-      if (!collectionName) {
-        return failure(response, "/db/insert needs collection");
-      }
-      if (!databaseName) {
-        return failure(response, "/db/insert needs database");
-      }
-
-      const database = connection.db(databaseName);
-
-      // Add collection if it doesn't already exist
-      if (!database.collection(collectionName)) {
-        console.log("creating collection " + collectionName);
-        database.createCollection(collectionName);
-      }
-
-      const collection = database.collection(collectionName);
-      const data = _.omit(request.body, ["colname", "dbname"]);
-      // log(`inserting data: ${JSON.stringify(data)}`);
-      collection.insert(data, (err, result) => {
-        if (err) {
-          return failure(response, `error inserting data: ${err}`);
-        } else {
-          return success(
-            response,
-            `successfully inserted data. result: ${JSON.stringify(result)}`
-          );
-        }
-      });
-    });
-
     app.post("/db/add", (req, res) => {
       console.log(`In Add.`);
-
       const newDraw = new Draw({
         filename: req.body.filename,
         age: req.body.age,
@@ -132,39 +92,27 @@ function serve() {
       },
         { valid: request.body.valid }
       )
-        .then(() => response.send("valid updated!"))
+        .then(() => esponse.status(200).send("valid updated!"))
         .catch(err => response.status(400).json("Error: " + err));
-    }
-    );
+    });
 
     /* Get Data Query */
     app.get("/db/get-data", (request, response) => {
-      log('In Get Data Req');
+      console.log('In Get Data Req');
+      console.log(request.body);
       const order = request.body.order;
-      const range = request.body.range;
+      const range = request.body.ageRange;
       const classes = request.body.classes;
       const validToken = request.body.valid;      //-1 only invalids. 0 unchecked. 1 only valids. 2 for ALL
       let valids = [validToken];
       if (validToken === 2) {
         valids = [-1, 0, 1]
       }
+
       log(classes);
       log(valids);
-      /*
-      Draw.find({
-        _class: { $in: classes },
-        age: { $gte: range[0], $lte: range[1] },
-        valid: { $in: valids}
-      })
-      .group({
-        _id: '$_class'
-      })
-      .sort(
-        {age: -1} //need to change this order
-      )
-        .then(draws => response.json(draws))
-        .catch(err => response.status(400).json("Error: " + err));
-        */
+      log(range);
+      log(order);
 
       var sortObject = {
       };
@@ -183,7 +131,7 @@ function serve() {
         sortObject._class = -1;
         sortObject.age = 1;
       }
-      
+
       Draw.aggregate([
         {
           $match: {
