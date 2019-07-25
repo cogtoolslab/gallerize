@@ -19,11 +19,15 @@ const drawSchema = new Schema({
     _class: {
         type: String,
         required: true
+    },
+    url:{
+        type: String,
+        required:true
     }
 }, {
         timestamps: true,
     });
 
-const Draw = mongoose.model('Draw', drawSchema, 'CustomeCollectionName');
+const Draw = mongoose.model('Draw', drawSchema, 'draws');
 
 module.exports = Draw;

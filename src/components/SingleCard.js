@@ -11,11 +11,6 @@ class SingleCard extends React.Component {
       dialogVisible: false
     };
   }
-/*  
-  componentWillReceiveProps(nextProps) {
-    this.setState({ item: nextProps.input });
-  }
-*/
   update(newValid){
     console.log("in update");
     axios.put('http://localhost:7000/db/update-data', {"valid":newValid, "filename": this.state.item.filename})
@@ -58,9 +53,11 @@ class SingleCard extends React.Component {
           <Dialog.Body>
             <p> {"File name: " + this.state.item.filename} </p>
             <p> {"Age: " + this.state.item.age}</p>
+            <p> {"Class: " + this.state.item._class}</p>
             <img
               style={{ width: "100%", height: "100%" }}
-              src={"/images/" + this.state.item.filename}
+              //src={"/images/" + this.state.item.filename}
+              src = {this.state.item.url}
               alt={""}
             />
             <p> other info? </p>

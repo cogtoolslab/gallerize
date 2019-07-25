@@ -101,10 +101,6 @@ function serve() {
           }
         }
       );
-      /*
-        .then(() => response.status(200).send("valid updated!"))
-        .catch(err => response.status(400).json("Error: " + err));
-        */
     });
 
     /* Get all classes query*/
@@ -127,12 +123,12 @@ function serve() {
       const order = request.body.order;
       const range = request.body.ageRange;
       const classes = request.body.classes;
-      const validToken = request.body.validToken;      //-1 only invalids. 0 unchecked. 1 only valids. 2 for ALL
-      
+      const validToken = parseInt(request.body.validToken);      //-1 only invalids. 0 unchecked. 1 only valids. 2 for ALL
       let valids = [validToken];
       if (validToken === 2) {
         valids = [-1, 0, 1];
       }
+      console.log(valids);
       var sortObject = {
       };
       if (order === "Age (Young - Old) Group By Class"){
@@ -150,11 +146,12 @@ function serve() {
         sortObject._class = -1;
         sortObject.age = 1;
       }
+
       Draw.aggregate([
         {
           $match: {
             _class: { $in: classes },
-            age: { $gte: range[0], $lte: range[1] },
+            age: { $gte: parseInt(range[0]), $lte: parseInt(range[1]) },
             valid: { $in: valids }
           }
         },
@@ -167,11 +164,10 @@ function serve() {
             response.status(400).json("Error: " + err);
           }
           else {
-            response.json(result)
+            response.json(result);
           }
         }
       );
-
     });
 
     app.listen(port, () => {

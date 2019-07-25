@@ -23,8 +23,7 @@ class Main extends React.Component {
     axios.get('http://localhost:7000/db/get-classes')
     .then(response => {
       var classes = response.data;
-      console.log("done fetching all classes!");
-      console.log(classes);
+      this.tempState.classes = classes;
       this.setState({allClasses: classes, classes: classes});
     }
     )
@@ -49,18 +48,18 @@ class Main extends React.Component {
     }
   }
   handleValidChange(newValue) {
-    console.log("in handleValidChange");
+    console.log("in handleValidChange, changed to " + newValue);
     this.tempState.valid = newValue;
   }
 
   handleMax(newMax) {
     console.log("in handleMax, changed to " + newMax);
-    this.tempState.ageRange = [this.state.ageRange[0], newMax];
+    this.tempState.ageRange = [this.tempState.ageRange[0], newMax];
   }
 
   handleMin(newMin) {
     console.log("in handleMin, changed to " + newMin);
-    this.tempState.ageRange = [newMin, this.state.ageRange[1]];
+    this.tempState.ageRange = [newMin, this.tempState.ageRange[1]];
   }
   submit(e) {
     e.preventDefault();
@@ -68,14 +67,13 @@ class Main extends React.Component {
     this.setState({
       order: this.tempState.order,
       classes: this.tempState.classes,
-      ageRange: this.tempState.ageRange
+      ageRange: this.tempState.ageRange,
+      valid: this.tempState.valid
     });
   }
 
   render() {
-    console.log("in main render");
     return (
-
       <div>
         {console.log("Main Started Rendering")}
         <div className="header">
@@ -170,8 +168,8 @@ class SelectClass extends React.Component {
   }
 
   render() {
-    console.log("render class picker");
-    console.log(this.state.options);
+    //console.log("render class picker");
+    //console.log(this.state.options);
     return (
       <Select
         multiple={true}
@@ -189,7 +187,7 @@ class SelectClass extends React.Component {
   }
 
   handleChange(event) {
-    console.log("class selection changed! ");
+    //console.log("class selection changed! ");
     this.props.onSelectChange(event);
   }
 }
@@ -236,7 +234,7 @@ class SelectSort extends React.Component {
   }
 
   handleChange(event) {
-    console.log("order selection changed! ");
+    //console.log("order selection changed! ");
     console.log(event);
     this.props.onSelectChange(event);
   }
