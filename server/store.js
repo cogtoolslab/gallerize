@@ -10,12 +10,8 @@ const app = express();
 const MongoClient = mongodb.MongoClient;
 const port = process.env.port || 7000;
 const mongoCreds = require("./auth.json");
-//const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@localhost:27017`;
-//const mongoURL = `mongodb//${mongoCreds.user}:${mongoCreds.password}@gallerize-pfiji.mongodb.net/test?retryWrites=true&w=majority`;
-//const mongoURL = `mongodb://localhost:27017`;
-const mongoURL = `mongodb+srv://${mongoCreds.user}:${
-  mongoCreds.password
-  }@gallerize-pfiji.mongodb.net/test?retryWrites=true&w=majority`;
+const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1`;
+
 const mongoose = require("mongoose");
 const cors = require("cors");
 
