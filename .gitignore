@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+auth.txt
+auth.json
+auth.py
+
 *.pdf
 *.png
 *.json
