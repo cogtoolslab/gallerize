@@ -10,6 +10,7 @@ const app = express();
 const MongoClient = mongodb.MongoClient;
 const port = process.env.port || 7000;
 const mongoCreds = require("./auth.json");
+//const mongoURL = `mongodb://127.0.0.1/gallerize`;
 const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1/gallerize?authSource=admin`
 const mongoose = require("mongoose");
 mongoose.set('useCreateIndex', true);
@@ -74,7 +75,7 @@ function serve() {
         filename: req.body.filename,
         age: req.body.age,
         valid: req.body.valid,
-        class: req.body.class
+        _class: req.body.class
       });
 
       newDraw
@@ -104,7 +105,8 @@ function serve() {
     /* Get all classes query*/
     app.get("/db/get-classes", (request, response) => {
       console.log(request.body);
-      Draw.find().distinct('class',
+      //console.log(Draw.find());
+      Draw.find().distinct('_class',
         function (err, result) {
           if (err) {
             response.status(400).json("Error: " + err);
@@ -132,24 +134,24 @@ function serve() {
       };
       if (order === "Age (Young - Old) Group By Class"){
         sortObject.age = 1;
-        sortObject.class = 1;
+        sortObject._class = 1;
       }
       else if( order === "Age (Old - Young) Group By Class") {
         sortObject.age = -1;
-        sortObject.class = 1;
+        sortObject._class = 1;
       } else if (order === "Class (A - Z) Group By Age"){
-        sortObject.class = 1;
+        sortObject._class = 1;
         sortObject.age = 1;
       }
       else if( order === "Class (Z - A) Group By Age") {
-        sortObject.class = -1;
+        sortObject._class = -1;
         sortObject.age = 1;
       }
 
       Draw.aggregate([
         {
           $match: {
-            class: { $in: classes },
+            _class: { $in: classes },
             age: { $gte: parseInt(range[0]), $lte: parseInt(range[1]) },
             valid: { $in: valids }
           }
