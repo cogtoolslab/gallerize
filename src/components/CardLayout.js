@@ -29,7 +29,7 @@ export class CardLayout extends React.Component {
 
   fetch(filter) {
     console.log("in fetch, filter is: ", filter);
-    axios.post('http://localhost:7000/db/get-data', filter)
+    axios.post('http://localhost:6000/db/get-data', filter)
       .then(response => {
         if (response.data.length > 0) {
           let toRet = response.data.map(curDraw => {

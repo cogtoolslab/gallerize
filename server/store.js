@@ -8,7 +8,7 @@ const colors = require("colors/safe");
 
 const app = express();
 const MongoClient = mongodb.MongoClient;
-const port = process.env.port || 7000;
+const port = process.env.port || 6000;
 const mongoCreds = require("./auth.json");
 const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1/gallerize?authSource=admin`
 const mongoose = require("mongoose");
