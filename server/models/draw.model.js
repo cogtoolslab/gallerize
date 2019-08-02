@@ -16,7 +16,7 @@ const drawSchema = new Schema({
         type: Number,
         require: true
     },
-    _class: {
+    class: {
         type: String,
         required: true
     },
@@ -28,6 +28,6 @@ const drawSchema = new Schema({
         timestamps: true,
     });
 
-const Draw = mongoose.model('Draw', drawSchema, 'draws');
+const Draw = mongoose.model('Draw', drawSchema, 'kiddraw');
 
 module.exports = Draw;
