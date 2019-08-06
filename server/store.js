@@ -7,13 +7,14 @@ const mongodb = require("mongodb");
 const colors = require("colors/safe");
 
 const app = express();
+const cors = require('cors');
+app.options('*', cors());
 const MongoClient = mongodb.MongoClient;
 const port = process.env.port || 7001;
 const mongoCreds = require("./auth.json");
 const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1/gallerize?authSource=admin`
 const mongoose = require("mongoose");
 mongoose.set('useCreateIndex', true);
-const cors = require("cors");
 
 function makeMessage(text) {
   return `${colors.blue("[store]")} ${text}`;
@@ -61,10 +62,10 @@ function mongoConnectWithRetry(delayInMilliseconds, callback) {
 let Draw = require("./models/draw.model");
 function serve() {
   mongoConnectWithRetry(2000, connection => {
-    //app.use(cors());
-    //app.use(express.json());
-    app.use(bodyParser.json({ limit: "50mb" })); // added bll
-    app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+    app.use(cors());
+    app.use(express.json());
+    //app.use(bodyParser.json({ limit: "50mb" })); // added bll
+    //app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
     
     console.log('Connected to mongo server.');
 
