@@ -93,7 +93,7 @@ function serve() {
         {new: true},
         (error, result)=>{
           if(error){
-            response.status(400).json("Error: " + err);
+            response.status(400).json("Error: " + error);
           }
           else{
             response.status(200).send("valid updated!");

@@ -11,25 +11,31 @@ class SingleCard extends React.Component {
       dialogVisible: false
     };
   }
-  update(newValid){
+  update(newValid) {
     console.log("in update");
-    axios.put('http://localhost:7001/db/update-data', {"valid":newValid, "filename": this.state.item.filename})
-    .then(response => {
-      if(response.status === 200){
-        console.log("updated to ", newValid);
-        this.setState({
-          value: newValid
-        });
-      }
-    })
-    .catch((error)=>{
-      console.log(error);
-    });
+    axios
+      .put("http://localhost:7001/db/update-data", {
+        valid: newValid,
+        filename: this.state.item.filename
+      })
+      .then(response => {
+        if (response.status === 200) {
+          console.log("updated to ", newValid);
+          this.setState({
+            value: newValid
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   popUp() {
+    console.log("poped up!");
     this.setState({ dialogVisible: true });
   }
+
   render() {
     console.log("started rendering single card");
     return (
@@ -43,9 +49,10 @@ class SingleCard extends React.Component {
           valid={this.state.value}
           filename={this.state.item.filename}
         />
+
         <Dialog
           title="Detailed Information"
-          size="tiny"
+          
           visible={this.state.dialogVisible}
           onCancel={() => this.setState({ dialogVisible: false })}
           lockScroll={false}
@@ -57,7 +64,7 @@ class SingleCard extends React.Component {
             <img
               style={{ width: "100%", height: "100%" }}
               //src={"/images/" + this.state.item.filename}
-              src = {this.state.item.url}
+              src={this.state.item.url}
               alt={""}
             />
             <p> other info? </p>
@@ -65,7 +72,7 @@ class SingleCard extends React.Component {
           <Dialog.Footer className="dialog-footer" />
         </Dialog>
         <div style={{ padding: 14 }}>
-          <p style={{ display: "inline" }}>{this.state.item._class}</p>
+          <p style={{ display: "inline" }}>{this.state.item.class}</p>
           <p style={{ display: "inline", marginLeft: "20px" }}>
             age: {this.state.item.age}
           </p>
@@ -108,6 +115,7 @@ class PicLink extends React.Component {
         <div>
           <img
             onClick={() => {
+              console.log("in click event!");
               this.props.popUp();
             }}
             src={"/images/" + this.props.filename}
@@ -121,6 +129,10 @@ class PicLink extends React.Component {
       return (
         <div>
           <img
+            onClick={() => {
+              console.log("in click event!");
+              this.props.popUp();
+            }}
             src={"/images/" + this.props.filename}
             alt="Kid Draw"
             style={{ backgroundColor: "rgba(0, 255, 0, 0.3)" }}
@@ -133,6 +145,10 @@ class PicLink extends React.Component {
     return (
       <div>
         <img
+          onClick={() => {
+            console.log("in click event!");
+            this.props.popUp();
+          }}
           src={"/images/" + this.props.filename}
           alt="Kid Draw"
           style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}
