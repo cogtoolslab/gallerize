@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/gallerize/static/css/main.2489a7eb.chunk.css",
+    "main.js": "/gallerize/static/js/main.21d46a81.chunk.js",
+    "main.js.map": "/gallerize/static/js/main.21d46a81.chunk.js.map",
+    "runtime~main.js": "/gallerize/static/js/runtime~main.b053e6a8.js",
+    "runtime~main.js.map": "/gallerize/static/js/runtime~main.b053e6a8.js.map",
+    "static/css/2.815e7c76.chunk.css": "/gallerize/static/css/2.815e7c76.chunk.css",
+    "static/js/2.bec7b3a5.chunk.js": "/gallerize/static/js/2.bec7b3a5.chunk.js",
+    "static/js/2.bec7b3a5.chunk.js.map": "/gallerize/static/js/2.bec7b3a5.chunk.js.map",
+    "index.html": "/gallerize/index.html",
+    "precache-manifest.ea639ecd8d8ff2dac5bde93625384bc2.js": "/gallerize/precache-manifest.ea639ecd8d8ff2dac5bde93625384bc2.js",
+    "service-worker.js": "/gallerize/service-worker.js",
+    "static/css/2.815e7c76.chunk.css.map": "/gallerize/static/css/2.815e7c76.chunk.css.map",
+    "static/css/main.2489a7eb.chunk.css.map": "/gallerize/static/css/main.2489a7eb.chunk.css.map",
+    "static/media/index.css": "/gallerize/static/media/element-icons.d2f69a92.woff"
+  }
+}
