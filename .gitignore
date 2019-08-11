@@ -9,6 +9,7 @@ __pycache__/
 auth.txt
 auth.json
 auth.py
+/build
 
 *.pdf
 *.png
