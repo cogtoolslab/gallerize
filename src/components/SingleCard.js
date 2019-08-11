@@ -32,12 +32,10 @@ class SingleCard extends React.Component {
   }
 
   popUp() {
-    console.log("poped up!");
     this.setState({ dialogVisible: true });
   }
 
   render() {
-    console.log("started rendering single card");
     return (
       <Card
         className="single"
@@ -115,7 +113,6 @@ class PicLink extends React.Component {
         <div>
           <img
             onClick={() => {
-              console.log("in click event!");
               this.props.popUp();
             }}
             src={"/images/" + this.props.filename}
@@ -130,7 +127,6 @@ class PicLink extends React.Component {
         <div>
           <img
             onClick={() => {
-              console.log("in click event!");
               this.props.popUp();
             }}
             src={"/images/" + this.props.filename}
@@ -146,7 +142,6 @@ class PicLink extends React.Component {
       <div>
         <img
           onClick={() => {
-            console.log("in click event!");
             this.props.popUp();
           }}
           src={"/images/" + this.props.filename}
