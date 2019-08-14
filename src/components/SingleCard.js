@@ -14,7 +14,7 @@ class SingleCard extends React.Component {
   update(newValid) {
     console.log("in update");
     axios
-      .put("http://localhost:7001/db/update-data", {
+      .put("http://localhost:27017/db/update-data", {
         valid: newValid,
         filename: this.state.item.filename
       })
