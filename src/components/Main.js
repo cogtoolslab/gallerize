@@ -20,7 +20,7 @@ class Main extends React.Component {
   }
 
   componentDidMount(){
-    axios.get('http://localhost:7001/db/get-classes')
+    axios.get('http://localhost:27017/db/get-classes')
     .then(response => {
       var classes = response.data;
       this.tempState.classes = classes;
