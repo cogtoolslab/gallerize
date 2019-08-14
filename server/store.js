@@ -10,7 +10,7 @@ const app = express();
 const cors = require('cors');
 app.options('*', cors());
 const MongoClient = mongodb.MongoClient;
-const port = process.env.port || 7001;
+const port = process.env.port || 27017;
 const mongoCreds = require("./auth.json");
 const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1/gallerize?authSource=admin`
 const mongoose = require("mongoose");
