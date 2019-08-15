@@ -9,12 +9,7 @@ const colors = require("colors/safe");
 const app = express();
 const cors = require('cors');
 
-var corsOptions = {
-  origin: 'http://cogtoolslab.org',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
-
-app.options('*', cors(corsOptions));
+app.options('*', cors());
 
 const MongoClient = mongodb.MongoClient;
 const port = process.env.port || 8882;
@@ -112,10 +107,12 @@ function serve() {
 
     /* Get all classes query*/
     app.get("/db/get-classes", (request, response) => {
-      log(request.body);
-      log(request.headers.origin);
-      log(request.get('origin'));
-
+      log("in get-classes");
+      if (request.headers.origin !== 'http://159.89.145.228:8881'){
+        log("bad origin");
+        response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
+        return;
+      }
       Draw.find().distinct('class',
         function (err, result) {
           if (err) {

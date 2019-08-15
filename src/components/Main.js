@@ -20,7 +20,7 @@ class Main extends React.Component {
 
   componentDidMount(){
     
-    axios.get('/db/get-classes')
+    axios.get('http://cogtoolslab.org:8882/db/get-classes')
           .then(response => {
       var classes = response.data;
       this.tempState.classes = classes;
@@ -31,8 +31,6 @@ class Main extends React.Component {
       console.log(error);
     });
     
-    var req = require('request').get;
-    req('http://localhost:8882/db/get-classes');
   }
 
   handleOrderChange(newOrder) {
