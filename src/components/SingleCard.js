@@ -14,7 +14,7 @@ class SingleCard extends React.Component {
   update(newValid) {
     console.log("in update");
     axios
-      .put("http:cogtoolslab.org:8882/db/update-data", {
+      .put("http://cogtoolslab.org:8882/db/update-data", {
         valid: newValid,
         filename: this.state.item.filename
       })
@@ -58,11 +58,11 @@ class SingleCard extends React.Component {
           <Dialog.Body>
             <p> {"File name: " + this.state.item.filename} </p>
             <p> {"Age: " + this.state.item.age}</p>
-            <p> {"Class: " + this.state.item._class}</p>
+            <p> {"Class: " + this.state.item.class}</p>
             <img
-              style={{ width: "100%", height: "100%" }}
-              //src={"/images/" + this.state.item.filename}
-              src={this.state.item.url}
+              style={{ display:"block", width: "50%", height: "50%", margin:"auto"}}
+              src={"/images/" + this.state.item.filename}
+              //src={this.state.item.url}
               alt={""}
             />
             <p> other info? </p>
