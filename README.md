@@ -7,6 +7,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+## 
+### `./deploy.sh`
+
+(Re)-build the app and deploy on [http://cogtoolslab.org:8881](http://cogtoolslab.org:8881) <br>
+Need to run `node server/store.js` to connect to MongoDB
+
 ### `npm start`
 
 Runs the app in the development mode.<br>

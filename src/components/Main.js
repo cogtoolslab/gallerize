@@ -3,7 +3,7 @@ import { Select, Input, Button, Radio} from "element-react";
 import { CardLayout } from "./CardLayout";
 import "element-theme-default";
 import axios from "axios";
-
+import request from "request";
 /* This is the main class including the header */
 class Main extends React.Component {
   constructor(props) {
@@ -20,8 +20,10 @@ class Main extends React.Component {
   }
 
   componentDidMount(){
-    axios.get('http://localhost:27017/db/get-classes')
-    .then(response => {
+    //axios.get('http://159.89.145.228:8882/db/get-classes')
+    
+    axios.get('http://cogtoolslab.org:8882/db/get-classes')
+          .then(response => {
       var classes = response.data;
       this.tempState.classes = classes;
       this.setState({allClasses: classes, classes: classes});

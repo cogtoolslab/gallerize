@@ -10,9 +10,9 @@ const app = express();
 const cors = require('cors');
 app.options('*', cors());
 const MongoClient = mongodb.MongoClient;
-const port = process.env.port || 27017;
+const port = process.env.port || 8882;
 const mongoCreds = require("./auth.json");
-const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1/gallerize?authSource=admin`
+const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1:27017/gallerize?authSource=admin`
 const mongoose = require("mongoose");
 mongoose.set('useCreateIndex', true);
 
@@ -86,6 +86,7 @@ function serve() {
 
     /* Update Data Query */
     app.put("/db/update-data", (request, response) => {
+      log(request.body);
       Draw.findOneAndUpdate({
         filename: request.body.filename
       },
@@ -104,7 +105,7 @@ function serve() {
 
     /* Get all classes query*/
     app.get("/db/get-classes", (request, response) => {
-      console.log(request.body);
+      log(request.body);
       Draw.find().distinct('class',
         function (err, result) {
           if (err) {
@@ -119,7 +120,7 @@ function serve() {
     
     /* Get Data Query */
     app.post("/db/get-data", (request, response) => {
-      console.log(request.body);
+      log(request.body);
       const order = request.body.order;
       const range = request.body.ageRange;
       const classes = request.body.classes;
