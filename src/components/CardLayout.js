@@ -29,9 +29,11 @@ export class CardLayout extends React.Component {
 
   fetch(filter) {
     console.log("in fetch, filter is: ", filter);
-    axios.post('http:cogtoolslab.org:8882/db/get-data', filter)
+    axios.post('http://cogtoolslab.org:8882/db/get-data', filter)
       .then(response => {
         if (response.data.length > 0) {
+        console.log(response);
+          console.log(response.data);
           let toRet = response.data.map(curDraw => {
             return <SingleCard input={curDraw} key={curDraw._id} />;
           });
