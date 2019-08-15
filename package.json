@@ -1,5 +1,6 @@
 {
-  "homepage": ".",
+  "homepage": "http://cogtoolslab.org:8882/",
+  "proxy": "http://cogtoolslab.org:8882",
   "@hot-loader/react-dom": "^16.8.6",
   "name": "gallerize",
   "version": "0.1.0",

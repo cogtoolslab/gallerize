@@ -8,7 +8,14 @@ const colors = require("colors/safe");
 
 const app = express();
 const cors = require('cors');
-app.options('*', cors());
+
+var corsOptions = {
+  origin: 'http://cogtoolslab.org',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.options('*', cors(corsOptions));
+
 const MongoClient = mongodb.MongoClient;
 const port = process.env.port || 8882;
 const mongoCreds = require("./auth.json");
@@ -106,6 +113,9 @@ function serve() {
     /* Get all classes query*/
     app.get("/db/get-classes", (request, response) => {
       log(request.body);
+      log(request.headers.origin);
+      log(request.get('origin'));
+
       Draw.find().distinct('class',
         function (err, result) {
           if (err) {
