@@ -19,18 +19,17 @@ class Main extends React.Component {
   }
 
   componentDidMount(){
-    
     axios.get('http://cogtoolslab.org:8882/db/get-classes')
           .then(response => {
       var classes = response.data;
-      this.tempState.classes = classes;
-      this.setState({allClasses: classes, classes: classes});
+      //this.tempState.classes = classes;
+      //this.setState({allClasses: classes, classes: classes});
+      this.setState({allClasses:classes});
     }
     )
     .catch((error)=>{
       console.log(error);
     });
-    
   }
 
   handleOrderChange(newOrder) {
@@ -42,7 +41,8 @@ class Main extends React.Component {
     console.log("in handleClassChange");
     if (newClass.length === 0) {
       console.log("changed to all classes");
-      this.tempState.classes = this.state.allClasses;
+      //this.tempState.classes = this.state.allClasses;
+      this.tempState.classes = [];
     } else {
       console.log("changed to :", newClass);
       this.tempState.classes = newClass;
@@ -80,7 +80,7 @@ class Main extends React.Component {
         <div className="header">
           <div style={{ float: "left", paddingLeft: "50px" }}>
             <div style={{ fontSize: "25px", fontWeight: "bold" }}>
-              Cogitive Tools Lab
+              Cognitive Tools Lab
             </div>
           </div>
           <div style={{ display: "inline-block", padding: "10px 50px" }}>
