@@ -8,9 +8,9 @@ const colors = require("colors/safe");
 
 const app = express();
 const cors = require('cors');
+
 var corsOptions = {
-  origin: 'http://159.89.145.228:8881',
-  //origin: 'http://cogtoolslab.org:8881',
+  origin: 'http://cogtoolslab.org:8881',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -50,7 +50,6 @@ function mongoConnectWithRetry(delayInMilliseconds, callback) {
   mongoose.connect(mongoURL,{
     useNewUrlParser: true
   },(err, connection) => {
-    //MongoClient.connect(mongoURL, { useNewUrlParser: true}, (err, connection) => {
       if (err) {
         console.error(`Error connecting to MongoDB: ${err}`);
         setTimeout(
@@ -65,16 +64,16 @@ function mongoConnectWithRetry(delayInMilliseconds, callback) {
   );
 }
 
-let Draw = require("./models/draw.model");
+//let Draw = require("./models/draw.model");
+let Draw = require("./models/collabDraw.model")
+
 function serve() {
   mongoConnectWithRetry(2000, connection => {
     app.use(cors(corsOptions));
     app.options('*', cors());
     app.use(express.json());
-    //app.use(bodyParser.json({ limit: "50mb" })); // added bll
-    //app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-    
     console.log('Connected to mongo server.');
+
 
     app.post("/db/add", (req, res) => {
       console.log(`In Add.`);
@@ -99,11 +98,13 @@ function serve() {
     /* Update Data Query */
     app.put("/db/update-data", (request, response) => {
       log("in update data");
+      
       if (request.headers.origin !== 'http://159.89.145.228:8881'){
         log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
       }
+      
       Draw.findOneAndUpdate({
         filename: request.body.filename
       },
@@ -145,11 +146,14 @@ function serve() {
     /* Get Data Query */
     app.post("/db/get-data", (request, response) => {
       log("in get-data");
+      console.log(request.body);
+      
       if (request.headers.origin !== 'http://159.89.145.228:8881'){
         log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
       }
+      
       const order = request.body.order;
       const range = request.body.ageRange;
       const classes = request.body.classes;
@@ -158,7 +162,6 @@ function serve() {
       if (validToken === 2) {
         valids = [-1, 0, 1];
       }
-      console.log(valids);
       var sortObject = {
       };
       if (order === "Age (Young - Old) Group By Class"){
@@ -181,7 +184,7 @@ function serve() {
         {
           $match: {
             class: { $in: classes },
-            age: { $gte: parseInt(range[0]), $lte: parseInt(range[1]) },
+            //age: { $gte: parseInt(range[0]), $lte: parseInt(range[1]) },
             valid: { $in: valids }
           }
         },

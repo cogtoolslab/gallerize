@@ -12,9 +12,9 @@ class SingleCard extends React.Component {
     };
   }
   update(newValid) {
-    console.log("in update");
     axios
       .put("http://cogtoolslab.org:8882/db/update-data", {
+        //.put("http://localhost:8882/db/update-data", {
         valid: newValid,
         filename: this.state.item.filename
       })
@@ -45,7 +45,7 @@ class SingleCard extends React.Component {
         <PicLink
           popUp={this.popUp.bind(this)}
           valid={this.state.value}
-          filename={this.state.item.filename}
+          url={this.state.item.url}
         />
 
         <Dialog
@@ -58,14 +58,16 @@ class SingleCard extends React.Component {
           <Dialog.Body>
             <p> {"File name: " + this.state.item.filename} </p>
             <p> {"Age: " + this.state.item.age}</p>
+            <p> {"GameID: " + this.state.item.gameID} </p>
             <p> {"Class: " + this.state.item.class}</p>
+            <p> {"repetition: " + this.state.item.repetition}</p>
+            <p> {"trialNUm: " + this.state.item.trialNum}</p>
+            <p> {"Condition: " + this.state.item.condition}</p>
             <img
               style={{ display:"block", width: "50%", height: "50%", margin:"auto"}}
-              src={"/images/" + this.state.item.filename}
-              //src={this.state.item.url}
-              alt={""}
+              src={this.state.item.url}
+              alt={"img"}
             />
-            <p> other info? </p>
           </Dialog.Body>
           <Dialog.Footer className="dialog-footer" />
         </Dialog>
@@ -115,7 +117,7 @@ class PicLink extends React.Component {
             onClick={() => {
               this.props.popUp();
             }}
-            src={"/images/" + this.props.filename}
+            src={this.props.url}
             alt="Kid Draw"
           />
         </div>
@@ -126,12 +128,12 @@ class PicLink extends React.Component {
       return (
         <div>
           <img
+          className = "valid"
             onClick={() => {
               this.props.popUp();
             }}
-            src={"/images/" + this.props.filename}
+            src={this.props.url}
             alt="Kid Draw"
-            style={{ backgroundColor: "rgba(0, 255, 0, 0.3)" }}
           />
         </div>
       );
@@ -141,12 +143,12 @@ class PicLink extends React.Component {
     return (
       <div>
         <img
+          className = "invalid"
           onClick={() => {
             this.props.popUp();
           }}
-          src={"/images/" + this.props.filename}
+          src={this.props.url}
           alt="Kid Draw"
-          style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}
         />
       </div>
     );

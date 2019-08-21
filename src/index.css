@@ -42,3 +42,19 @@ code {
   display: inline-block;
   margin-left: 10px;
 }
+
+img {
+  width:100px;
+  height:100px;
+}
+
+img.invalid{
+  background-Color: rgba(255, 0, 0, 0.3);
+}
+
+img.valid{
+  background-Color: rgba(0, 255, 0, 0.3);
+}
+
+
+

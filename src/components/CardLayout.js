@@ -30,6 +30,7 @@ export class CardLayout extends React.Component {
   fetch(filter) {
     console.log("in fetch, filter is: ", filter);
     axios.post('http://cogtoolslab.org:8882/db/get-data', filter)
+    //axios.post('http://localhost:8882/db/get-data', filter)
       .then(response => {
         if (response.data.length > 0) {
         console.log(response);
@@ -49,11 +50,15 @@ export class CardLayout extends React.Component {
 
   render() {
     console.log("in render, toRet is now: ", this.state.toRet);
+    if (this.state.toRet.length === 0){
+      return (
+        <h1 style ={{textAlign:"center",top:"100"}}> Please Specify Class to Start! </h1>
+      )
+    }
     return (
       <div className="content">
         {console.log("started rendering Layout")}
         {this.state.toRet}
-
       </div>
     );
   }

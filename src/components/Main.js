@@ -20,8 +20,10 @@ class Main extends React.Component {
 
   componentDidMount(){
     axios.get('http://cogtoolslab.org:8882/db/get-classes')
+    //axios.get('http://localhost:8882/db/get-classes')
           .then(response => {
       var classes = response.data;
+      //comment out next two lines
       //this.tempState.classes = classes;
       //this.setState({allClasses: classes, classes: classes});
       this.setState({allClasses:classes});
@@ -113,6 +115,7 @@ class Main extends React.Component {
             </Button>
           </div>
         </div>
+
         <CardLayout
           order={this.state.order}
           classes={this.state.classes}
