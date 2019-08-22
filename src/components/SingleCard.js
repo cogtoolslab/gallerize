@@ -20,7 +20,6 @@ class SingleCard extends React.Component {
       })
       .then(response => {
         if (response.status === 200) {
-          console.log("updated to ", newValid);
           this.setState({
             value: newValid
           });
@@ -50,7 +49,7 @@ class SingleCard extends React.Component {
 
         <Dialog
           title="Detailed Information"
-          
+
           visible={this.state.dialogVisible}
           onCancel={() => this.setState({ dialogVisible: false })}
           lockScroll={false}
@@ -64,7 +63,7 @@ class SingleCard extends React.Component {
             <p> {"trialNUm: " + this.state.item.trialNum}</p>
             <p> {"Condition: " + this.state.item.condition}</p>
             <img
-              style={{ display:"block", width: "50%", height: "50%", margin:"auto"}}
+              style={{ display: "block", width: "50%", height: "50%", margin: "auto" }}
               src={this.state.item.url}
               alt={"img"}
             />
@@ -73,15 +72,20 @@ class SingleCard extends React.Component {
         </Dialog>
         <div style={{ padding: 14 }}>
           <p style={{ display: "inline" }}>{this.state.item.class}</p>
+          {/*
           <p style={{ display: "inline", marginLeft: "20px" }}>
             age: {this.state.item.age}
           </p>
+          */}
           <div style={{ marginTop: "10px" }}>
             <Button
               style={{ float: "left" }}
               size="small"
-              type="success"
-              disabled={this.state.value === 1}
+              type= { ()=>{
+                if (this.state.value === 0) return "success";
+                if (this.state.value !==0) return "info";
+              }
+              }
               onClick={e => {
                 this.update(1);
               }}
@@ -91,8 +95,11 @@ class SingleCard extends React.Component {
             <Button
               style={{ float: "right" }}
               size="small"
-              type="danger"
-              disabled={this.state.value === -1}
+              type= { ()=>{
+                if (this.state.value === 0) return "danger";
+                if (this.state.value !==0) return "info";
+              }
+              }
               onClick={e => {
                 this.update(-1);
               }}
@@ -128,7 +135,7 @@ class PicLink extends React.Component {
       return (
         <div>
           <img
-          className = "valid"
+            className="valid"
             onClick={() => {
               this.props.popUp();
             }}
@@ -143,7 +150,7 @@ class PicLink extends React.Component {
     return (
       <div>
         <img
-          className = "invalid"
+          className="invalid"
           onClick={() => {
             this.props.popUp();
           }}

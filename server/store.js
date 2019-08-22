@@ -10,7 +10,7 @@ const app = express();
 const cors = require('cors');
 
 var corsOptions = {
-  origin: 'http://cogtoolslab.org:8881',
+  origin: 'http://159.89.145.228:8881',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -47,20 +47,20 @@ function success(response, text) {
 }
 
 function mongoConnectWithRetry(delayInMilliseconds, callback) {
-  mongoose.connect(mongoURL,{
+  mongoose.connect(mongoURL, {
     useNewUrlParser: true
-  },(err, connection) => {
-      if (err) {
-        console.error(`Error connecting to MongoDB: ${err}`);
-        setTimeout(
-          () => mongoConnectWithRetry(delayInMilliseconds, callback),
-          delayInMilliseconds
-        );
-      } else {
-        log("connected succesfully to mongodb");
-        callback(connection);
-      }
+  }, (err, connection) => {
+    if (err) {
+      console.error(`Error connecting to MongoDB: ${err}`);
+      setTimeout(
+        () => mongoConnectWithRetry(delayInMilliseconds, callback),
+        delayInMilliseconds
+      );
+    } else {
+      log("connected succesfully to mongodb");
+      callback(connection);
     }
+  }
   );
 }
 
@@ -70,14 +70,14 @@ let Draw = require("./models/collabDraw.model")
 function serve() {
   mongoConnectWithRetry(2000, connection => {
     app.use(cors(corsOptions));
+    //app.use(cors());
     app.options('*', cors());
     app.use(express.json());
     console.log('Connected to mongo server.');
 
 
     app.post("/db/add", (req, res) => {
-      console.log(`In Add.`);
-      if (request.headers.origin !== 'http://159.89.145.228:8881'){
+      if (request.headers.origin !== 'http://159.89.145.228:8881') {
         log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
@@ -98,23 +98,23 @@ function serve() {
     /* Update Data Query */
     app.put("/db/update-data", (request, response) => {
       log("in update data");
-      
-      if (request.headers.origin !== 'http://159.89.145.228:8881'){
+
+      if (request.headers.origin !== 'http://159.89.145.228:8881') {
         log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
       }
-      
+
       Draw.findOneAndUpdate({
         filename: request.body.filename
       },
-        {valid: request.body.valid },
-        {new: true},
-        (error, result)=>{
-          if(error){
+        { valid: request.body.valid },
+        { new: true },
+        (error, result) => {
+          if (error) {
             response.status(400).json("Error: " + error);
           }
-          else{
+          else {
             response.status(200).send("valid updated!");
           }
         }
@@ -124,13 +124,13 @@ function serve() {
     /* Get all classes query*/
     app.get("/db/get-classes", (request, response) => {
       log("in get-classes");
-      
-      if (request.headers.origin !== 'http://159.89.145.228:8881'){
+
+      if (request.headers.origin !== 'http://159.89.145.228:8881') {
         log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
       }
-      
+
       Draw.find().distinct('class',
         function (err, result) {
           if (err) {
@@ -142,18 +142,18 @@ function serve() {
         }
       );
     });
-    
+
     /* Get Data Query */
     app.post("/db/get-data", (request, response) => {
       log("in get-data");
       console.log(request.body);
-      
-      if (request.headers.origin !== 'http://159.89.145.228:8881'){
+
+      if (request.headers.origin !== 'http://159.89.145.228:8881') {
         log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
       }
-      
+
       const order = request.body.order;
       const range = request.body.ageRange;
       const classes = request.body.classes;
@@ -164,18 +164,18 @@ function serve() {
       }
       var sortObject = {
       };
-      if (order === "Age (Young - Old) Group By Class"){
+      if (order === "Age (Young - Old) Group By Class") {
         sortObject.age = 1;
         sortObject.class = 1;
       }
-      else if( order === "Age (Old - Young) Group By Class") {
+      else if (order === "Age (Old - Young) Group By Class") {
         sortObject.age = -1;
         sortObject.class = 1;
-      } else if (order === "Class (A - Z) Group By Age"){
+      } else if (order === "Class (A - Z) Group By Age") {
         sortObject.class = 1;
         sortObject.age = 1;
       }
-      else if( order === "Class (Z - A) Group By Age") {
+      else if (order === "Class (Z - A) Group By Age") {
         sortObject.class = -1;
         sortObject.age = 1;
       }
