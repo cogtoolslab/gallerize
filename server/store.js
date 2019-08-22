@@ -12,9 +12,7 @@ const cors = require('cors');
 const whiteList = ['http://cogtoolslab.org:8881','http://159.89.145.228:8881'];
 
 var corsOptions = {
-<<<<<<< HEAD
-  origin: 'http://159.89.145.228:8881',
-=======
+
         origin : function (origin, callback){
           if (whiteList.indexOf(origin)!==-1){
                   callback(null,true);
@@ -23,7 +21,6 @@ var corsOptions = {
                   callback(new Error('Not allowed Cors'));
           }
   },
->>>>>>> ef88bf4c969481cdcaf67cfdad4cc145b484b753
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -117,13 +114,9 @@ function serve() {
     /* Update Data Query */
     app.put("/db/update-data", (request, response) => {
       log("in update data");
-<<<<<<< HEAD
 
-      if (request.headers.origin !== 'http://159.89.145.228:8881') {
-=======
          
       if (whiteList.indexOf(request.headers.origin) ===-1){
->>>>>>> ef88bf4c969481cdcaf67cfdad4cc145b484b753
         log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
