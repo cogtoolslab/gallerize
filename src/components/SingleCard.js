@@ -126,9 +126,8 @@ class PicLink extends React.Component {
     //Those have been marked as valid
     if (this.props.valid === 1) {
       return (
-        <div>
+        <div className = "valid">
           <img
-          className = "valid"
             onClick={() => {
               this.props.popUp();
             }}
@@ -141,9 +140,8 @@ class PicLink extends React.Component {
 
     //Those have been marked as invalid
     return (
-      <div>
+      <div className = "invalid">
         <img
-          className = "invalid"
           onClick={() => {
             this.props.popUp();
           }}

@@ -46,15 +46,15 @@ code {
 img {
   width:100px;
   height:100px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
 }
 
-img.invalid{
-  background-Color: rgba(255, 0, 0, 0.3);
+.invalid{
+        background-color:red;
 }
 
-img.valid{
-  background-Color: rgba(0, 255, 0, 0.3);
+.valid{
+        background-color:green;
 }
-
-
-
