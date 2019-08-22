@@ -32,16 +32,18 @@ code {
 }
 
 img {
-  width:100%;
-  height:100%;
-  opacity: 0.3;
-  filter: grayscale(100%);
+  max-width:100px;
+  max-height:100px;
+  display:block;
+  margin:auto;
 }
 
-img.invalid{
-        background-color:red;
+.invalid{
+        border-style:solid;
+        border-color:red;
 }
 
-img.valid{
-        background-color:green;
+.valid{
+    border-style:solid;
+    border-color:green;
 }
