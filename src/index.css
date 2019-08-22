@@ -39,12 +39,9 @@ img {
 }
 
 img.invalid{
-  background-Color: rgba(255, 0, 0, 0.3);
+        background-color:red;
 }
 
 img.valid{
-  background-Color: rgba(0, 255, 0, 0.3);
+        background-color:green;
 }
-
-
-
