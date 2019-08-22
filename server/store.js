@@ -88,12 +88,8 @@ function serve() {
 
 
     app.post("/db/add", (req, res) => {
-<<<<<<< HEAD
-      if (request.headers.origin !== 'http://159.89.145.228:8881') {
-=======
       console.log(`In Add.`);
       if (whiteList.indexOf(request.headers.origin) ===-1){
->>>>>>> ef88bf4c969481cdcaf67cfdad4cc145b484b753
         log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
@@ -141,16 +137,10 @@ function serve() {
     /* Get all classes query*/
     app.get("/db/get-classes", (request, response) => {
       log("in get-classes");
-<<<<<<< HEAD
-
-      if (request.headers.origin !== 'http://159.89.145.228:8881') {
-        log("bad origin");
-=======
       log(request.headers.origin); 
         
       if (whiteList.indexOf(request.headers.origin) ===-1){
             log("bad origin");
->>>>>>> ef88bf4c969481cdcaf67cfdad4cc145b484b753
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
       }
