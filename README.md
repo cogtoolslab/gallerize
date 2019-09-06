@@ -6,8 +6,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### To launch app from your server:
 
 ```
-`node server/store.js`
-`./deploy.sh`
+1. First start node process to interface with mongodb.
+node server/store.js
+2. Deploy app
+./deploy.sh
 ```
 
 (Re)-build the app and deploy on [http://cogtoolslab.org:8881](http://cogtoolslab.org:8881) <br>
