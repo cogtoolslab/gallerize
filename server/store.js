@@ -8,7 +8,7 @@ const colors = require("colors/safe");
 
 const app = express();
 const MongoClient = mongodb.MongoClient;
-const port = process.env.port || 6000;
+const port = process.env.port || 6002;
 const mongoCreds = require("./auth.json");
 const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1/gallerize?authSource=admin`
 const mongoose = require("mongoose");
@@ -18,7 +18,6 @@ const cors = require("cors");
 function makeMessage(text) {
   return `${colors.blue("[store]")} ${text}`;
 }
-
 function log(text) {
   console.log(makeMessage(text));
 }
