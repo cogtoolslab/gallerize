@@ -11,27 +11,37 @@ class SingleCard extends React.Component {
       dialogVisible: false
     };
   }
-  update(newValid){
-    console.log("in update");
-    axios.put('http://localhost:7000/db/update-data', {"valid":newValid, "filename": this.state.item.filename})
-    .then(response => {
-      if(response.status === 200){
-        console.log("updated to ", newValid);
-        this.setState({
-          value: newValid
-        });
-      }
-    })
-    .catch((error)=>{
-      console.log(error);
-    });
+  getValid(token) {
+    if (this.state.value !== 0) return "info";
+    if (this.token === "valid") return "success";
+    if (this.token === "invalid") return "danger";
+  }
+  update(newValid) {
+    axios
+      .put("http://cogtoolslab.org:8882/db/update-data", {
+        //.put("http://localhost:8882/db/update-data", {
+        valid: newValid,
+        filename: this.state.item.filename
+      })
+      .then(response => {
+        if (response.status === 200) {
+          this.setState({
+            value: newValid
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   popUp() {
     this.setState({ dialogVisible: true });
   }
+
   render() {
-    console.log("started rendering single card");
+    let token = this.getValid("valid");
+    let token2 = this.getValid("invalid");
     return (
       <Card
         className="single"
@@ -41,11 +51,12 @@ class SingleCard extends React.Component {
         <PicLink
           popUp={this.popUp.bind(this)}
           valid={this.state.value}
-          filename={this.state.item.filename}
+          url={this.state.item.url}
         />
+
         <Dialog
           title="Detailed Information"
-          size="tiny"
+
           visible={this.state.dialogVisible}
           onCancel={() => this.setState({ dialogVisible: false })}
           lockScroll={false}
@@ -53,45 +64,50 @@ class SingleCard extends React.Component {
           <Dialog.Body>
             <p> {"File name: " + this.state.item.filename} </p>
             <p> {"Age: " + this.state.item.age}</p>
-            <p> {"Class: " + this.state.item._class}</p>
+            <p> {"GameID: " + this.state.item.gameID} </p>
+            <p> {"Class: " + this.state.item.class}</p>
+            <p> {"repetition: " + this.state.item.repetition}</p>
+            <p> {"trialNUm: " + this.state.item.trialNum}</p>
+            <p> {"Condition: " + this.state.item.condition}</p>
             <img
-              style={{ width: "100%", height: "100%" }}
-              //src={"/images/" + this.state.item.filename}
-              src = {this.state.item.url}
-              alt={""}
+              style={{ display: "block", width: "50%", height: "50%", margin: "auto" }}
+              src={this.state.item.url}
+              alt={"img"}
             />
-            <p> other info? </p>
           </Dialog.Body>
           <Dialog.Footer className="dialog-footer" />
         </Dialog>
         <div style={{ padding: 14 }}>
-          <p style={{ display: "inline" }}>{this.state.item._class}</p>
+          <p style={{ display: "inline" }}>{this.state.item.class}</p>
+          {/*
           <p style={{ display: "inline", marginLeft: "20px" }}>
             age: {this.state.item.age}
           </p>
+                          */}
           <div style={{ marginTop: "10px" }}>
             <Button
               style={{ float: "left" }}
               size="small"
               type="success"
-              disabled={this.state.value === 1}
+              plain={this.state.value !== 0}
               onClick={e => {
                 this.update(1);
               }}
             >
               valid
-            </Button>
+                        </Button>
+
             <Button
               style={{ float: "right" }}
               size="small"
               type="danger"
-              disabled={this.state.value === -1}
+              plain={this.state.value !== 0}
               onClick={e => {
                 this.update(-1);
               }}
             >
               invalid
-            </Button>
+                        </Button>
           </div>
           <br />
         </div>
@@ -110,7 +126,7 @@ class PicLink extends React.Component {
             onClick={() => {
               this.props.popUp();
             }}
-            src={"/images/" + this.props.filename}
+            src={this.props.url}
             alt="Kid Draw"
           />
         </div>
@@ -119,11 +135,13 @@ class PicLink extends React.Component {
     //Those have been marked as valid
     if (this.props.valid === 1) {
       return (
-        <div>
+        <div className="valid">
           <img
-            src={"/images/" + this.props.filename}
+            onClick={() => {
+              this.props.popUp();
+            }}
+            src={this.props.url}
             alt="Kid Draw"
-            style={{ backgroundColor: "rgba(0, 255, 0, 0.3)" }}
           />
         </div>
       );
@@ -131,11 +149,13 @@ class PicLink extends React.Component {
 
     //Those have been marked as invalid
     return (
-      <div>
+      <div className="invalid">
         <img
-          src={"/images/" + this.props.filename}
+          onClick={() => {
+            this.props.popUp();
+          }}
+          src={this.props.url}
           alt="Kid Draw"
-          style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}
         />
       </div>
     );

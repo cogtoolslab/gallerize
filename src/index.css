@@ -12,22 +12,11 @@ code {
     monospace;
 }
 
-.header {
-  display: block;
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  height: 100px;
-  background-color: #ffd139;
-}
 
-.header a {
-  float: left;
-  color: black;
-  text-align: center;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 18px;
+.navbar-light{
+  position: sticky;
+  z-index: 3;
+  background-color: #ffd139;
 }
 
 .content {
@@ -36,7 +25,25 @@ code {
   margin-right: 10%;
   margin-top: 30px;
 }
+
 .single {
   display: inline-block;
   margin-left: 10px;
+}
+
+img {
+  max-width:100px;
+  max-height:100px;
+  display:block;
+  margin:auto;
+}
+
+.invalid{
+        border-style:solid;
+        border-color:red;
+}
+
+.valid{
+    border-style:solid;
+    border-color:green;
 }

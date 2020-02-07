@@ -1,9 +1,8 @@
 import React from "react";
-import { Select, Input, Button, Radio} from "element-react";
+import { Select, Input, Button, Radio } from "element-react";
 import { CardLayout } from "./CardLayout";
 import "element-theme-default";
 import axios from "axios";
-
 /* This is the main class including the header */
 class Main extends React.Component {
   constructor(props) {
@@ -19,17 +18,20 @@ class Main extends React.Component {
     this.tempState = this.state;
   }
 
-  componentDidMount(){
-    axios.get('http://localhost:7000/db/get-classes')
-    .then(response => {
-      var classes = response.data;
-      this.tempState.classes = classes;
-      this.setState({allClasses: classes, classes: classes});
-    }
-    )
-    .catch((error)=>{
-      console.log(error);
-    });
+  componentDidMount() {
+    axios.get('http://cogtoolslab.org:8882/db/get-classes')
+      //axios.get('http://localhost:8882/db/get-classes')
+      .then(response => {
+        var classes = response.data;
+        //comment out next two lines
+        //this.tempState.classes = classes;
+        //this.setState({allClasses: classes, classes: classes});
+        this.setState({ allClasses: classes });
+      }
+      )
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   handleOrderChange(newOrder) {
@@ -41,7 +43,8 @@ class Main extends React.Component {
     console.log("in handleClassChange");
     if (newClass.length === 0) {
       console.log("changed to all classes");
-      this.tempState.classes = this.state.allClasses;
+      //this.tempState.classes = this.state.allClasses;
+      this.tempState.classes = [];
     } else {
       console.log("changed to :", newClass);
       this.tempState.classes = newClass;
@@ -75,14 +78,15 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        {console.log("Main Started Rendering")}
-        <div className="header">
+        <nav className="navbar navbar-light" >
           <div style={{ float: "left", paddingLeft: "50px" }}>
             <div style={{ fontSize: "25px", fontWeight: "bold" }}>
-              Cogitive Tools Lab
+              Cognitive Tools Lab
             </div>
           </div>
+
           <div style={{ display: "inline-block", padding: "10px 50px" }}>
+            {/*
             <SelectSort onSelectChange={this.handleOrderChange.bind(this)} />
             <Input
               onChange={this.handleMin.bind(this)}
@@ -105,18 +109,21 @@ class Main extends React.Component {
               type="number"
               placeholder="max age"
             />
-            <SelectClass allClasses = {this.state.allClasses} onSelectChange={this.handleClassChange.bind(this)}/>
-            <SelectValid validChange = {this.handleValidChange.bind(this)}/>
-            <Button style = {{marginLeft: '50px'}} type="primary" onClick={this.submit.bind(this)}>
+            */}
+
+            <SelectClass allClasses={this.state.allClasses} onSelectChange={this.handleClassChange.bind(this)} />
+            <SelectValid validChange={this.handleValidChange.bind(this)} />
+            <Button style={{ marginLeft: "50px" }} type="primary" onClick={this.submit.bind(this)}>
               Submit
             </Button>
           </div>
-        </div>
+        </nav>
+
         <CardLayout
           order={this.state.order}
           classes={this.state.classes}
           ageRange={this.state.ageRange}
-          validToken = {this.state.valid}
+          validToken={this.state.valid}
         />
       </div>
 
@@ -124,23 +131,23 @@ class Main extends React.Component {
   }
 }
 
-class SelectValid extends React.Component{
+class SelectValid extends React.Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {
       value: 2
     }
   }
-  
+
   onChange(value) {
     this.setState({ value });
     this.props.validChange(value);
   }
-  
+
   render() {
     return (
-      <Radio.Group style = {{marginLeft: '50px'}} value={this.state.value} onChange={this.onChange.bind(this)}>
+      <Radio.Group style={{ marginLeft: '50px' }} value={this.state.value} onChange={this.onChange.bind(this)}>
         <Radio value="-1">Invalid</Radio>
         <Radio value="0">Unchecked</Radio>
         <Radio value="1">Valid</Radio>
@@ -163,8 +170,8 @@ class SelectClass extends React.Component {
       value: []
     };
   }
-  componentWillReceiveProps(nextprops){
-    this.setState({options: nextprops.allClasses.map(each => {return {value: each}})});
+  componentWillReceiveProps(nextprops) {
+    this.setState({ options: nextprops.allClasses.map(each => { return { value: each } }) });
   }
 
   render() {
@@ -197,7 +204,7 @@ class SelectSort extends React.Component {
     super(props);
 
     this.state = {
-      
+
       options: [
         {
           value: "Age (Young - Old) Group By Class"
@@ -219,7 +226,7 @@ class SelectSort extends React.Component {
   render() {
     return (
       <Select
-        style = {{width:'250px'}}
+        style={{ width: '250px' }}
         onChange={this.handleChange.bind(this)}
         placeholder="sort by..."
         value={this.state.value}
