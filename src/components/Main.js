@@ -19,7 +19,7 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('http://cogtoolslab.org:8882/db/get-classes')
+    axios.get('http://cogtoolslab.org:8887/db/get-classes')
       //axios.get('http://localhost:8882/db/get-classes')
       .then(response => {
         var classes = response.data;

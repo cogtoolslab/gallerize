@@ -26,7 +26,7 @@ var corsOptions = {
 
 
 const MongoClient = mongodb.MongoClient;
-const port = process.env.port || 6002;
+const port = process.env.port || 8887;
 const mongoCreds = require("./auth.json");
 const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1:27017/gallerize?authSource=admin`
 const mongoose = require("mongoose");

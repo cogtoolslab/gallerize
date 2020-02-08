@@ -29,7 +29,7 @@ export class CardLayout extends React.Component {
 
   fetch(filter) {
     console.log("in fetch, filter is: ", filter);
-    axios.post('http://cogtoolslab.org:8882/db/get-data', filter)
+    axios.post('http://cogtoolslab.org:8887/db/get-data', filter)
       //axios.post('http://localhost:8882/db/get-data', filter)
       .then(response => {
         if (response.data.length > 0) {
