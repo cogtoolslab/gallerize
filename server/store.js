@@ -5,30 +5,39 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const mongodb = require("mongodb");
 const colors = require("colors/safe");
-
+const argv = require('minimist')(process.argv.slice(2));
 const app = express();
 const cors = require('cors');
 
-const whiteList = ['http://cogtoolslab.org:8881','http://159.89.145.228:8881'];
+let gameport;
+if (argv.gameport) {
+  gameport = argv.gameport;
+  log('using port ' + gameport);
+} else {
+  gameport = 8887;
+  log('no gameport specified: using 8887\nUse the --gameport flag to change');
+}
+
+// const whiteList = ['http://cogtoolslab.org:8881','http://159.89.145.228:8881'];
+const whiteList = ['http://stanford-cogsci.org:8889', 'http://10.0.0.221:3000', 'http://localhost:3000'];
 
 var corsOptions = {
 
-        origin : function (origin, callback){
-          if (whiteList.indexOf(origin)!==-1){
-                  callback(null,true);
-          }
-          else{
-                  callback(new Error('Not allowed Cors'));
-          }
+  origin: function (origin, callback) {
+    if (whiteList.indexOf(origin) !== -1) {
+      callback(null, true);
+    }
+    else {
+      callback(new Error('Not allowed Cors'));
+    }
   },
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-
-const MongoClient = mongodb.MongoClient;
-const port = process.env.port || 8887;
+const port = gameport;
 const mongoCreds = require("./auth.json");
-const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1:27017/gallerize?authSource=admin`
+// const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1:27017/gallerize?authSource=admin`
+const mongoURL = `mongodb://${mongoCreds.user}:${mongoCreds.password}@127.0.0.1:27017/kiddraw?authSource=admin`
 const mongoose = require("mongoose");
 mongoose.set('useCreateIndex', true);
 
@@ -55,6 +64,25 @@ function success(response, text) {
   return response.send(message);
 }
 
+function markAnnotation(model, gameid, drawings) {
+  let id_list = drawings.map(x => mongoose.Types.ObjectId(x._id));
+  log(id_list)
+
+  model.updateMany(
+    { _id: { $in: id_list } },
+    {
+      $push: { games: 'abc' }
+    },
+    function (err, items) {
+      log(items)
+      if (err) {
+        log(`error marking annotation data: ${err}`);
+      } else {
+        log(`successfully marked annotation. result: ${JSON.stringify(items)}`);
+      }
+    });
+};
+
 function mongoConnectWithRetry(delayInMilliseconds, callback) {
   mongoose.connect(mongoURL, {
     useNewUrlParser: true
@@ -74,7 +102,8 @@ function mongoConnectWithRetry(delayInMilliseconds, callback) {
 }
 
 //let Draw = require("./models/draw.model");
-let Draw = require("./models/collabDraw.model")
+let Draw = require("./models/draw.model")
+let Response = require("./models/response.model")
 
 function serve() {
   mongoConnectWithRetry(2000, connection => {
@@ -88,7 +117,7 @@ function serve() {
 
     app.post("/db/add", (req, res) => {
       console.log(`In Add.`);
-      if (whiteList.indexOf(request.headers.origin) ===-1){
+      if (whiteList.indexOf(request.headers.origin) === -1) {
         log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
@@ -110,8 +139,7 @@ function serve() {
     app.put("/db/update-data", (request, response) => {
       log("in update data");
 
-         
-      if (whiteList.indexOf(request.headers.origin) ===-1){
+      if (whiteList.indexOf(request.headers.origin) === -1) {
         log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
@@ -136,10 +164,10 @@ function serve() {
     /* Get all classes query*/
     app.get("/db/get-classes", (request, response) => {
       log("in get-classes");
-      log(request.headers.origin); 
-        
-      if (whiteList.indexOf(request.headers.origin) ===-1){
-            log("bad origin");
+      log(request.headers.origin);
+
+      if (whiteList.indexOf(request.headers.origin) === -1) {
+        log("bad origin");
         response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
         return;
       }
@@ -154,6 +182,46 @@ function serve() {
           }
         }
       );
+    });
+
+    app.post("/db/get-single-class", (request, response) => {
+      log("get single class");
+      log(request.body);
+
+      Draw.aggregate([
+        { $addFields: { numGames: { $size: '$games' } } },
+        { $match: { class: request.body.class } },
+        { $sort: { numGames: 1, shuffler_ind: 1 } },
+        { $limit: request.body.num }
+      ],
+        function (err, result) {
+          if (err) {
+            response.status(400).json("Error: " + err);
+          }
+          else {
+            response.status(200).json(result);
+            //request.body.mturk_id
+            markAnnotation(Draw, 'abc', result);
+          }
+        }
+      );
+    })
+
+    app.post("/db/post-response", (request, response) => {
+      log("in post-response");
+
+      const newResponses = request.body.map(x => {
+        return new Response(x)
+      })
+
+      Response.insertMany(newResponses, function (error) {
+        if (error) {
+          log(error)
+          response.status(400).json("Error: " + error)
+        } else {
+          response.status(200).json("new Responses added!")
+        }
+      });
     });
 
     /* Get Data Query */
@@ -198,7 +266,7 @@ function serve() {
           $match: {
             class: { $in: classes },
             //age: { $gte: parseInt(range[0]), $lte: parseInt(range[1]) },
-            valid: { $in: valids }
+            // valid: { $in: valids }
           }
         },
         {

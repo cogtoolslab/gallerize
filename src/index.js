@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { Main } from "./components/Main";
+import { MTurk } from "./components/mturk_study/mturk";
 import "element-theme-default";
 import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(<Main />, document.getElementById("main"));
+ReactDOM.render(<MTurk />, document.getElementById("main"));
 serviceWorker.unregister();
