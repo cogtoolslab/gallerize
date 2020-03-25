@@ -17,16 +17,6 @@ export class Trial extends React.Component {
 
         let checkFiles = Array.from({length: 11}, (x,i) => i.toString() + '.png');
         checkFiles.sort(() => Math.random() - 0.5);
-        let checkCards = checkFiles.map((f, i)=>{
-            let checkData = { url: require('./check/' + f), valid: 0, _id: i, fname: f, class: 'check' }
-            return <InvalidCard
-                input={checkData}
-                key={checkData._id}
-                local={true}
-                hasCancel={true}
-                handleCheck={this.findCheck}
-                cancelCheck={this.cancelCheck} />;
-        })
 
         this.state = {
             showPage: props.showPage,
@@ -36,7 +26,7 @@ export class Trial extends React.Component {
             nextDisable: false,
             invalidDrawings: [],
             curClass: '',
-            checkList: checkCards
+            checkList: checkFiles,
         }
     }
 
@@ -130,7 +120,17 @@ export class Trial extends React.Component {
                         />;
                     });
 
-                    toRet.push(this.state.checkList[this.state.classIdx])
+                    let fn = this.state.checkList[this.state.classIdx];
+                    let checkData = { url: require('./check/' + fn), valid: 0, _id: this.state.classIdx, fname: fn, class: filter.class }
+                    let checkCard = <InvalidCard
+                            input={checkData}
+                            key={checkData._id}
+                            local={true}
+                            hasCancel={true}
+                            handleCheck={this.findCheck}
+                            cancelCheck={this.cancelCheck} />;
+
+                    toRet.push(checkCard);
                     toRet.sort(() => Math.random() - 0.5);
 
                     this.setState({

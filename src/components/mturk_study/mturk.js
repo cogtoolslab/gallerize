@@ -98,8 +98,8 @@ class MTurk extends React.Component {
         return (
             <div>
                 <Header title="Drawing Validation Study" />
-                <Timeline ref={this.intro} pages={pages} showPage={false} finalText="Start the Study" redirect={this.redirect} />
-                <Trial ref={this.exp} allClasses={this.state.allClasses} showPage={true} finalText="Finish" num={23} />
+                <Timeline ref={this.intro} pages={pages} showPage={true} finalText="Start the Study" redirect={this.redirect} />
+                <Trial ref={this.exp} allClasses={this.state.allClasses} showPage={false} finalText="Finish" num={23} />
             </div>
         );
     }
