@@ -1,11 +1,10 @@
 import React from "react";
 import { Button, Layout } from "element-react";
 
+/*
+The Instruction component renders text and image instructions
+*/
 class Instruction extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const divStyle = {
             margin: '10px 66px',
@@ -15,12 +14,15 @@ class Instruction extends React.Component {
 
         return (
             <div style={divStyle}>
-                {this.props.content}
+                {this.props.children}
             </div>
         );
     }
 }
 
+/*
+The Timeline component renders a set of pages and the user could use prev and next buttons to switch pages
+*/
 class Timeline extends React.Component {
     constructor(props) {
         super(props);
@@ -30,24 +32,33 @@ class Timeline extends React.Component {
             nextDisable: false,
             nextText: 'Next Page',
             nextPage: 'Next Page',
-            lastPage: this.props.pages[this.props.pages.length-1]
+            showPage: this.props.showPage,
         };
-        this.handleChildClick = this.handleChildClick.bind(this);
     }
 
-    componentDidUpdate(){
-        // if(this.lastPage.)
+    enableNext(){
+        this.setState({nextDisable: false});
+    }
+
+    showPage(){
+        this.setState({showPage: true});
     }
 
     nextPage() {
         if (this.state.currentPage < this.props.pages.length - 1) {
-            this.setState({ currentPage: this.state.currentPage + 1 })
             if (this.state.currentPage === 0){
                 this.setState({prevDisable: false});
             }else if (this.state.currentPage === this.props.pages.length - 2){
                 this.setState({nextText: this.props.finalText})
                 this.setState({nextDisable: true})
             }
+            this.setState({ currentPage: this.state.currentPage + 1 })
+            
+        }else{
+            this.setState({
+                showPage: false
+            })
+            this.props.redirect();
         }
     }
 
@@ -63,15 +74,10 @@ class Timeline extends React.Component {
         }
     }
 
-    handleChildClick = function(){
-        this.setState({
-            nextDisable: false
-        })
-    }
-
     render() {
+        console.log(this.props.pages[this.state.currentPage])
         return (
-            <div>
+            <div style={{display:this.state.showPage? "block": "none"}}>
                 <Layout.Row type="flex" justify="center" style={{padding: '10px'}}>
                     <Button.Group>
                         <Button disabled={this.state.prevDisable} icon="arrow-left" onClick={() => this.prevPage()}>Previous Page</Button>
