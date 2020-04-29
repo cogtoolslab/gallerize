@@ -53,3 +53,7 @@ img {
   max-height: 200px; 
   padding: 20px;
 }
+
+div.el-notification{
+  right: 40%;
+}
