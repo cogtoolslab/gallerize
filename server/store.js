@@ -21,7 +21,7 @@ if (argv.gameport) {
 }
 
 // const whiteList = ['http://cogtoolslab.org:8881','http://159.89.145.228:8881'];
-const whiteList = ['http://138.68.25.178:8891','http://stanford-cogsci.org:8891', 'http://10.0.0.221:3000', 'http://localhost:3000', 'http://stanford-cogsci.org:3000', 'http://138.68.25.178:3000'];
+const whiteList = ['http://138.68.25.178:8882','http://stanford-cogsci.org:8882', 'http://10.0.0.221:3000', 'http://localhost:3000', 'http://stanford-cogsci.org:3000', 'http://138.68.25.178:3000'];
 
 var corsOptions = {
 
