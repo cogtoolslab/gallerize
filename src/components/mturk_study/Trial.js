@@ -1,6 +1,6 @@
 import React from "react";
 import { InvalidCard } from "../SingleCard";
-import { Button, Layout } from "element-react";
+import { Button, Layout, Notification} from "element-react";
 import axios from "axios";
 
 /*
@@ -58,9 +58,18 @@ export class Trial extends React.Component {
     }
 
     nextPage() {
+        if (this.state.nextDisable){
+            Notification({
+                title: 'Warning',
+                message: 'There are missing invalid drawings. Please check again!',
+                type: 'warning',
+              });
+            return;
+        }
+
         // for the last trial, change the button text to "Submit the HIT"
         if (this.state.classIdx === this.props.allClasses.length - 1) {
-            return
+            return;
         }
         if (this.state.classIdx === this.props.allClasses.length - 2) {
             this.setState({
@@ -159,7 +168,7 @@ export class Trial extends React.Component {
                 <div>
                     <Layout.Row type="flex" justify="center" style={{ padding: '10px' }}>
                         <Button.Group>
-                            <Button disabled={this.state.nextDisable} onClick={() => this.nextPage()}>{this.state.buttonText}<i className="el-icon-arrow-right el-icon-right"></i></Button>
+                            <Button onClick={() => this.nextPage()}>{this.state.buttonText}<i className="el-icon-arrow-right el-icon-right"></i></Button>
                         </Button.Group>
                         <div style={{ paddingLeft: '20px' }}> {this.state.classIdx + 1}/{this.props.allClasses.length} </div>
                     </Layout.Row>
