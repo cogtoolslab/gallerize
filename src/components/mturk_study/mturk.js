@@ -32,7 +32,7 @@ class MTurk extends React.Component {
 
     fetchAllClasses() {
         // fetch all class names
-        axios.get('http://localhost:8887/db/get-classes')
+        axios.get('https://138.68.25.178:8883/db/get-classes')
             .then(response => {
                 let classes = response.data;
                 classes.sort(() => Math.random() - 0.5); //shuffle the order

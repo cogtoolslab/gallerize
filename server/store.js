@@ -8,6 +8,8 @@ const colors = require("colors/safe");
 const argv = require('minimist')(process.argv.slice(2));
 const app = express();
 const cors = require('cors');
+const https = require('https');
+const fs = require('fs');
 
 let gameport;
 if (argv.gameport) {
@@ -19,7 +21,7 @@ if (argv.gameport) {
 }
 
 // const whiteList = ['http://cogtoolslab.org:8881','http://159.89.145.228:8881'];
-const whiteList = ['http://stanford-cogsci.org:8889', 'http://10.0.0.221:3000', 'http://localhost:3000'];
+const whiteList = ['http://138.68.25.178:8882','http://stanford-cogsci.org:8882', 'http://10.0.0.221:3000', 'http://localhost:3000', 'http://stanford-cogsci.org:3000', 'http://138.68.25.178:3000'];
 
 var corsOptions = {
 
@@ -283,10 +285,23 @@ function serve() {
         }
       );
     });
+      
+    try {
+      var privateKey  = fs.readFileSync('/etc/apache2/ssl/stanford-cogsci.org.key'),
+          certificate = fs.readFileSync('/etc/apache2/ssl/stanford-cogsci.org.crt'),
+          intermed    = fs.readFileSync('/etc/apache2/ssl/intermediate.crt'),
+          options     = {key: privateKey, cert: certificate, ca: intermed};
+       https.createServer(options, app).listen(gameport);
+       log(`running at https://localhost:${port}`);
+    } catch (err) {
+      console.log(err);
+      console.log("cannot find SSL certificates; falling back to http");
+      app.listen(port, () => {
+          log(`running at http://localhost:${port}`);
+        });
+    }
 
-    app.listen(port, () => {
-      log(`running at http://localhost:${port}`);
-    });
+//    
   });
 }
 
