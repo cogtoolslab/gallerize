@@ -7,6 +7,8 @@ import "element-theme-default";
 import axios from "axios";
 import { Instruction, Timeline } from "./instruction";
 import { Trial } from "./Trial";
+const https = require('https');
+const fs = require('fs');
 
 class MTurk extends React.Component {
     constructor(props) {
@@ -32,7 +34,7 @@ class MTurk extends React.Component {
 
     fetchAllClasses() {
         // fetch all class names
-        axios.get('https://138.68.25.178:8883/db/get-classes')
+        axios.get('https://stanford-cogsci.org:8883/db/get-classes')
             .then(response => {
                 let classes = response.data;
                 classes.sort(() => Math.random() - 0.5); //shuffle the order
