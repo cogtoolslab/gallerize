@@ -70,7 +70,7 @@ export class Trial extends React.Component {
 
         //submit data on the current category
         if (this.state.invalidDrawings.length > 0) {
-            axios.post("https://cogtoolslab.org:8883/db/post-response", this.state.invalidDrawings)
+            axios.post("https://stanford-cogsci.org:8883/db/post-response", this.state.invalidDrawings)
                 .then(() => {
                     this.setState({
                         invalidDrawings: []
@@ -105,7 +105,7 @@ export class Trial extends React.Component {
     }
 
     fetch(filter) {
-        axios.post("https://cogtoolslab.org:8883/db/get-single-class", filter)
+        axios.post("https://stanford-cogsci.org:8883/db/get-single-class", filter)
             .then(response => {
                 if (response.data.length > 0) {
                     let toRet = response.data.map(curDraw => {
