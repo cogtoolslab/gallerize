@@ -15,6 +15,15 @@ node server/store.js
 (Re)-build the app and deploy on [http://cogtoolslab.org:8881](http://cogtoolslab.org:8881) <br>
 Need to run `node server/store.js` to connect to MongoDB
 
+
+### Judy notes while chatting with Zixian:
+1. To check data that has been marked invalid see [this notebook](https://github.com/cogtoolslab/gallerize/blob/mturk/public/parser/find_invalid_drawings.ipynb)
+2. `kiddraw` dbname is specified in `gallerize/server/store.js`
+3. `check_invalid_v5_dev` colname is specified in `gallerize/server/models/draw.model.js`.
+
+
+
+
 ### `npm start`
 
 Runs the app in the development mode.<br>
