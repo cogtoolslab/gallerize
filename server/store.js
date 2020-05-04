@@ -28,7 +28,6 @@ var corsOptions = {
   origin: function (origin, callback) {
     log(origin);
     if (whiteList.indexOf(origin) !== -1) {
-      log("allowed cors")
       callback(null, true);
     }
     else {
@@ -277,12 +276,12 @@ function serve() {
           intermed    = fs.readFileSync('/etc/apache2/ssl/intermediate.crt'),
           options     = {key: privateKey, cert: certificate, ca: intermed};
        https.createServer(options, app).listen(port);
-       log(`server running at https://localhost:` + port);
+       log(`running at https://localhost:` + port);
     } catch (err) {
       console.log(err);
       console.log("cannot find SSL certificates; falling back to http");
       app.listen(port, () => {
-          log(`server running at http://localhost:`+port);
+          log(`running at http://localhost:`+port);
         });
     }
   });
