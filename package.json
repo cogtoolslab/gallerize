@@ -26,8 +26,8 @@
     "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
-    "build": "HTTPS=true react-scripts build",
+    "start": "HTTPS=true PORT=8882 react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test"
   },
   "eslintConfig": {

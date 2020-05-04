@@ -21,12 +21,14 @@ if (argv.gameport) {
 }
 
 // const whiteList = ['http://cogtoolslab.org:8881','http://159.89.145.228:8881'];
-const whiteList = ['http://138.68.25.178:8882','http://stanford-cogsci.org:8882', 'http://10.0.0.221:3000', 'http://localhost:3000', 'http://stanford-cogsci.org:3000', 'http://138.68.25.178:3000'];
+const whiteList = ['https://138.68.25.178:8883', 'https://stanford-cogsci.org:8883'];
 
 var corsOptions = {
 
   origin: function (origin, callback) {
+    log(origin);
     if (whiteList.indexOf(origin) !== -1) {
+      log("allowed cors")
       callback(null, true);
     }
     else {
@@ -109,21 +111,14 @@ let Response = require("./models/response.model")
 
 function serve() {
   mongoConnectWithRetry(2000, connection => {
-    app.use(cors(corsOptions));
-    //app.use(cors());
-    app.options('*', cors());
-    //app.use(cors());
+    app.use(cors());
     app.use(express.json());
     console.log('Connected to mongo server.');
 
 
-    app.post("/db/add", (req, res) => {
+    app.post("/db/add", cors(corsOptions), (req, res) => {
       console.log(`In Add.`);
-      if (whiteList.indexOf(request.headers.origin) === -1) {
-        log("bad origin");
-        response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
-        return;
-      }
+      
       const newDraw = new Draw({
         filename: req.body.filename,
         age: req.body.age,
@@ -138,14 +133,8 @@ function serve() {
     });
 
     /* Update Data Query */
-    app.put("/db/update-data", (request, response) => {
+    app.put("/db/update-data", cors(corsOptions), (request, response) => {
       log("in update data");
-
-      if (whiteList.indexOf(request.headers.origin) === -1) {
-        log("bad origin");
-        response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
-        return;
-      }
 
       Draw.findOneAndUpdate({
         filename: request.body.filename
@@ -164,19 +153,13 @@ function serve() {
     });
 
     /* Get all classes query*/
-    app.get("/db/get-classes", (request, response) => {
+    app.get("/db/get-classes", cors(corsOptions), (request, response) => {
       log("in get-classes");
-      log(request.headers.origin);
-
-      if (whiteList.indexOf(request.headers.origin) === -1) {
-        log("bad origin");
-        response.status(401).json("ERROR: BAD ORIGIN, AUTHENTICATION FAILED");
-        return;
-      }
 
       Draw.find().distinct('class',
         function (err, result) {
           if (err) {
+            log(err)
             response.status(400).json("Error: " + err);
           }
           else {
@@ -186,7 +169,7 @@ function serve() {
       );
     });
 
-    app.post("/db/get-single-class", (request, response) => {
+    app.post("/db/get-single-class", cors(corsOptions), (request, response) => {
       log("get single class");
       log(request.body);
 
@@ -209,7 +192,7 @@ function serve() {
       );
     })
 
-    app.post("/db/post-response", (request, response) => {
+    app.post("/db/post-response", cors(corsOptions), (request, response) => {
       log("in post-response");
 
       const newResponses = request.body.map(x => {
@@ -227,7 +210,7 @@ function serve() {
     });
 
     /* Get Data Query */
-    app.post("/db/get-data", (request, response) => {
+    app.post("/db/get-data", cors(corsOptions), (request, response) => {
       log("in get-data");
       console.log(request.body);
 
@@ -284,24 +267,24 @@ function serve() {
           }
         }
       );
-    });
+    }); 
+    
+    app.use(express.static('./../build'));
       
     try {
       var privateKey  = fs.readFileSync('/etc/apache2/ssl/stanford-cogsci.org.key'),
           certificate = fs.readFileSync('/etc/apache2/ssl/stanford-cogsci.org.crt'),
           intermed    = fs.readFileSync('/etc/apache2/ssl/intermediate.crt'),
           options     = {key: privateKey, cert: certificate, ca: intermed};
-       https.createServer(options, app).listen(gameport);
-       log(`running at https://localhost:${port}`);
+       https.createServer(options, app).listen(port);
+       log(`server running at https://localhost:` + port);
     } catch (err) {
       console.log(err);
       console.log("cannot find SSL certificates; falling back to http");
       app.listen(port, () => {
-          log(`running at http://localhost:${port}`);
+          log(`server running at http://localhost:`+port);
         });
     }
-
-//    
   });
 }
 
