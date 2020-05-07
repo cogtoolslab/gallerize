@@ -115,7 +115,7 @@ function serve() {
     console.log('Connected to mongo server.');
 
 
-    app.post("/db/add", cors(corsOptions), (req, res) => {
+    app.post("/db/add", (req, res) => {
       console.log(`In Add.`);
       
       const newDraw = new Draw({
@@ -132,7 +132,7 @@ function serve() {
     });
 
     /* Update Data Query */
-    app.put("/db/update-data", cors(corsOptions), (request, response) => {
+    app.put("/db/update-data", (request, response) => {
       log("in update data");
 
       Draw.findOneAndUpdate({
@@ -152,7 +152,7 @@ function serve() {
     });
 
     /* Get all classes query*/
-    app.get("/db/get-classes", cors(corsOptions), (request, response) => {
+    app.get("/db/get-classes", (request, response) => {
       log("in get-classes");
 
       Draw.find().distinct('class',
@@ -168,7 +168,7 @@ function serve() {
       );
     });
 
-    app.post("/db/get-single-class", cors(corsOptions), (request, response) => {
+    app.post("/db/get-single-class", (request, response) => {
       log("get single class");
       log(request.body);
 
@@ -191,7 +191,7 @@ function serve() {
       );
     })
 
-    app.post("/db/post-response", cors(corsOptions), (request, response) => {
+    app.post("/db/post-response", (request, response) => {
       log("in post-response");
 
       const newResponses = request.body.map(x => {
@@ -209,7 +209,7 @@ function serve() {
     });
 
     /* Get Data Query */
-    app.post("/db/get-data", cors(corsOptions), (request, response) => {
+    app.post("/db/get-data", (request, response) => {
       log("in get-data");
       console.log(request.body);
 
