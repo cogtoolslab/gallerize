@@ -8,26 +8,33 @@ const drawSchema = new Schema({
         required: true,
         unique: true
     },
+    session_id: {
+        type: String,
+        required: true
+    },
     age: {
         type: Number,
         require: true
     },
     valid: {
         type: Number,
-        require: true
     },
     class: {
         type: String,
         required: true
     },
-    url:{
+    url: {
         type: String,
-        required:true
+        required: true
+    },
+    games: {
+        type: Array,
+        required: true
     }
 }, {
-        timestamps: true,
-    });
+    timestamps: true,
+});
 
-const Draw = mongoose.model('Draw', drawSchema, 'kiddraw');
+const Draw = mongoose.model('Draw', drawSchema, 'check_invalid_v5_dev');
 
 module.exports = Draw;

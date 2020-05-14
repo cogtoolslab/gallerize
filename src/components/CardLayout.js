@@ -18,13 +18,16 @@ export class CardLayout extends React.Component {
       classes: this.props.classes,
       ageRange: this.props.ageRange,
       validToken: this.props.validToken,
-      toRet: []
+      local: this.props.local,
+      toRet: this.props.toRet || []
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("in will receive props:", nextProps);
-    this.fetch(nextProps);
+    if (!this.state.local){
+      console.log("in will receive props:", nextProps);
+      this.fetch(nextProps);
+    }
   }
 
   fetch(filter) {
@@ -36,7 +39,7 @@ export class CardLayout extends React.Component {
           console.log(response);
           console.log(response.data);
           let toRet = response.data.map(curDraw => {
-            return <SingleCard input={curDraw} key={curDraw._id} />;
+            return <SingleCard input={curDraw} key={curDraw._id}/>;
           });
           this.setState({
             toRet: toRet

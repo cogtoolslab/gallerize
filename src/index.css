@@ -47,3 +47,13 @@ img {
     border-style:solid;
     border-color:green;
 }
+
+.invalid_img{
+  max-width: 200px; 
+  max-height: 200px; 
+  padding: 20px;
+}
+
+div.el-notification{
+  right: 40%;
+}
