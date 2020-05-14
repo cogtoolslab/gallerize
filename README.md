@@ -9,12 +9,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ```
 ./deploy.sh
 ```
+This does NOT serve the app. 
 
 **Step 2**: Start node process to interface with mongodb. The app is running on the selected port (default: 8887). <br>
 ```
 node server/store.js --gameport xxxx
 ```
-
+This *will* serve the app, over the port passed to the gameport flag.
 
 ### Judy notes while chatting with Zixian:
 1. To check data that has been marked invalid see [this notebook](https://github.com/cogtoolslab/gallerize/blob/mturk/public/parser/find_invalid_drawings.ipynb)
