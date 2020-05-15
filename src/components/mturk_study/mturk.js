@@ -64,9 +64,20 @@ class MTurk extends React.Component {
             fontSize: '1em'
         }
 
-        let consent = <p>In this HIT, you will view some drawings on common categories, such as hats and lamps. Your task is to identify invalid drawings.
-            <br />We expect this hit to take approximately 10-15 minutes to complete, including the time it takes to read instructions.
-            <br />If you encounter a problem or error, send us an email (bria@stanford.edu) and we will make sure you're compensated for your time! Please pay attention and do your best! Thank you!
+        let consent = <p>In this HIT, you will view some drawings of various common objects, 
+            such as hats and lamps. Your task is to identify which of these drawings are "invalid."
+            Please keep in mind that even if a drawing is pretty sloppy and does not look pretty, it 
+            is still valid if it looks like the person who made it was at least trying to draw the object. 
+            There are a few ways for a drawing to be considered "invalid," namely: (1) The drawing mainly
+            consists of "scribbles," instead of strokes that aim to depict an object; (2) The drawing is
+            mostly incomplete, or the canvas is entirely blank; (3) The drawing is recognizable, but it is
+            a drawing of something else, other than the target object; (4) The drawing contains any words, numbers, 
+            arrows, or other symbols that are not part of the object itself.
+            <br />We expect this hit to take approximately 10-15 minutes to complete, 
+            including the time it takes to read instructions.
+            <br />If you encounter a problem or error, send us an email (bria@stanford.edu) 
+            and we will make sure you are compensated for your time! Please pay attention and 
+            do your best! Thank you!
             <br />Note: We recommend using Chrome. We have not tested this HIT in other browsers.
             </p>
 
