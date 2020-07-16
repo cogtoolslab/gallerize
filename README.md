@@ -12,8 +12,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 This does NOT serve the app. 
 
 **Step 2**: Start node process to interface with mongodb. The app is running on the selected port (default: 8887). <br>
+Go into the the `server` directory and run this comamnd:
 ```
-node server/store.js --gameport xxxx
+node store.js --gameport xxxx
 ```
 This *will* serve the app, over the port passed to the gameport flag.
 
