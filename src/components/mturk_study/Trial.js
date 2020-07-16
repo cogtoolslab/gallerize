@@ -69,6 +69,7 @@ export class Trial extends React.Component {
 
         // for the last trial, change the button text to "Submit the HIT"
         if (this.state.classIdx === this.props.allClasses.length - 1) {
+            turk.submit()
             return;
         }
         if (this.state.classIdx === this.props.allClasses.length - 2) {
@@ -183,5 +184,30 @@ export class Trial extends React.Component {
             </div>
         )
     }
+
+    // allDone() {
+    //     refImg = "";
+       
+
+    //     return (
+    //         <div style={{ display: this.state.showPage ? "block" : "none" }}>
+    //             <div>
+    //                 <Layout.Row type="flex" justify="center" style={{ padding: '10px' }}>
+    //                     <Button.Group>
+    //                         <Button onClick={() => this.nextPage()}>{this.state.buttonText}<i className="el-icon-arrow-right el-icon-right"></i></Button>
+    //                     </Button.Group>
+    //                     <div style={{ paddingLeft: '20px' }}> {this.state.classIdx + 1}/{this.props.allClasses.length} </div>
+    //                 </Layout.Row>
+
+    //                 <Layout.Row type="flex" justify="center" style={{ padding: '10px', textAlign: "center" }}>
+    //                     <Layout.Col span="12"><h3 style={{ textAlign: "center", top: "30px" }}> <p>THANK YOU</b></p> </h3></Layout.Col>
+    //                     <Layout.Col span="1"><img src={refImg} style={{ width: '60px' }} /></Layout.Col>
+    //                 </Layout.Row>
+    //                 {this.state.toRet}
+    //             </div>
+
+    //         </div>
+    //     )
+    // }
 }
 
