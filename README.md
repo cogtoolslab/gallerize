@@ -20,11 +20,11 @@ node store.js --gameport xxxx
 ```
 This *will* serve the app, over the port passed to the gameport flag.
 
-### Judy notes while chatting with Zixian:
+### Handy things about where to find various bits of info in this repo:
 1. To check data that has been marked invalid see [this notebook](https://github.com/cogtoolslab/gallerize/blob/mturk/public/parser/find_invalid_drawings.ipynb)
 2. `kiddraw` dbname is specified in `gallerize/server/store.js`
 3. `check_invalid_v5_dev` colname is specified in `gallerize/server/models/draw.model.js`.
-
+4. If you are looking for where we are saving `worker_id`, look in `src/components/mturk_study/SingleCard.js` in `getInstanceInfo()`. [source](https://github.com/cogtoolslab/gallerize/blob/master/src/components/SingleCard.js#L99-L106) 
 
 
 
