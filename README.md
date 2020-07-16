@@ -3,6 +3,8 @@ tool for generating web-based interactive sketch gallery
 =======
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+After cloning the repo, remember to install your node packages by running `npm install` at the top level of the repo. 
+
 ### To launch app from your server:
 
 **Step 1**: (Re)-build the app by running <br>
