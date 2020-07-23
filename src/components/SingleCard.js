@@ -8,6 +8,7 @@ When the user click on the card, detailed information about the drawing is shown
 input: action button and related data modification functions 
 */
 
+
 class DrawCard extends React.Component {
   constructor(props) {
     super(props);
@@ -103,7 +104,7 @@ class InvalidCard extends React.Component {
       class: this.props.input.class,
       age: this.props.input.age,
       date: new Date(),
-      // worker_id: turk.workerId()
+      worker_id: window.turk.workerId()
     }
     return data
   }

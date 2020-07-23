@@ -69,7 +69,7 @@ export class Trial extends React.Component {
 
         // for the last trial, change the button text to "Submit the HIT"
         if (this.state.classIdx === this.props.allClasses.length - 1) {
-            turk.submit()
+            window.turk.submit()
             return;
         }
         if (this.state.classIdx === this.props.allClasses.length - 2) {
