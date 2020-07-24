@@ -75,7 +75,7 @@ export class Trial extends React.Component {
                 completed: true,
                 workerId: window.turk.workerId,    
             }
-            window.turk.submit(submit_data, true)
+            window.turk.submit(this.submit_data, true)
             return;
         }
         if (this.state.classIdx === this.props.allClasses.length - 2) {
