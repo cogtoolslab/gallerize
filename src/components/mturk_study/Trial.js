@@ -70,8 +70,8 @@ export class Trial extends React.Component {
         // for the last trial, change the button text to "Submit the HIT"
         if (this.state.classIdx === this.props.allClasses.length - 1) {
 
-            submit_data = []    
-            submit_data = {
+            this.submit_data = []    
+            this.submit_data = {
                 completed: true,
                 workerId: window.turk.workerId,    
             }
