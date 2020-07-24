@@ -104,7 +104,7 @@ class InvalidCard extends React.Component {
       class: this.props.input.class,
       age: this.props.input.age,
       date: new Date(),
-      worker_id: window.turk.workerId()
+      worker_id: window.turk.workerId
     }
     return data
   }
