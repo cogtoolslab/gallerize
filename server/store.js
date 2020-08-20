@@ -171,11 +171,12 @@ function serve() {
     app.post("/db/get-single-class", (request, response) => {
       log("get single class");
       log(request.body);
+      log(request.body.mturk_id);
 
       Draw.aggregate([
-        { $addFields: { numGames: { $size: '$games' } } },
+        { $addFields: { numGames: { $size: '$games' } } },  
         { $match: { class: request.body.class } },
-        { $sort: { numGames: 1, shuffler_ind: 1 } },
+        { $sort: { numGames: 1, shuffler_ind: 1 } }, // 1 - order of sorting, ascending -- sorting by num games then by shuffler_ind
         { $limit: request.body.num }
       ],
         function (err, result) {
