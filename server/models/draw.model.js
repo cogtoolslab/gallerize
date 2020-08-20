@@ -35,6 +35,6 @@ const drawSchema = new Schema({
     timestamps: true,
 });
 
-const Draw = mongoose.model('Draw', drawSchema, 'check_invalid_v5_dev');
+const Draw = mongoose.model('Draw', drawSchema, 'check_invalid_v5_dev_smaller');
 
 module.exports = Draw;

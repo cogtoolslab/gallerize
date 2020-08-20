@@ -28,6 +28,6 @@ const responseSchema = new Schema({
     }
 });
 
-const Response = mongoose.model('Response', responseSchema, 'invalid_draw')
+const Response = mongoose.model('Response', responseSchema, 'invalid_draw_test')
 
 module.exports = Response;
