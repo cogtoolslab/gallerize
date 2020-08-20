@@ -102,7 +102,8 @@ export class Trial extends React.Component {
         let curClass = this.props.allClasses[nextIdx];
         let filter = {
             class: curClass,
-            num: this.props.num
+            num: this.props.num,
+            worker_id: window.turk.workerId,
         };
         this.fetch(filter);
         this.setState({

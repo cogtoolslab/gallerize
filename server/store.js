@@ -74,7 +74,7 @@ function markAnnotation(model, gameid, drawings) {
   model.updateMany(
     { _id: { $in: id_list } },
     {
-      $push: { games: 'abc' }
+      $push: {games: gameid}
     },
     function (err, items) {
       log(items)
@@ -171,7 +171,7 @@ function serve() {
     app.post("/db/get-single-class", (request, response) => {
       log("get single class");
       log(request.body);
-      log(request.body.mturk_id);
+      log(request.body.worker_id);
 
       Draw.aggregate([
         { $addFields: { numGames: { $size: '$games' } } },  
@@ -186,7 +186,7 @@ function serve() {
           else {
             response.status(200).json(result);
             //request.body.mturk_id
-            markAnnotation(Draw, 'abc', result);
+            markAnnotation(Draw, request.body.worker_id, result);
           }
         }
       );
