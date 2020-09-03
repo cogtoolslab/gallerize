@@ -69,11 +69,12 @@ class MTurk extends React.Component {
             Please keep in mind that even if a drawing is pretty sloppy and does not look pretty, it 
             is still valid if it looks like the person who made it was at least trying to draw the object. 
             There are a few ways for a drawing to be considered "invalid," namely: (1) The drawing mainly
-            consists of "scribbles," instead of strokes that aim to depict an object; (2) The drawing is
-            mostly incomplete, or the canvas is entirely blank; (3) The drawing is recognizable, but it is
-            a drawing of something else, other than the target object; (4) The drawing contains any words, numbers, 
-            arrows, or other symbols that are not part of the object itself.
-            <br />We expect this hit to take approximately 10-15 minutes to complete, 
+            consists of "scribbles," instead of strokes that aim to depict an object; (2) The canvas is almost
+            entirely blank; (3) The drawing is recognizable, but it is a drawing of something else, other than the target object; 
+            (4) The drawing contains any words, numbers, arrows, or other symbols that are not part of the object itself; please help us by 
+            flagging any inappropriate content as invalid. 
+
+            <br />We expect this hit to take approximately 5 minutes to complete, 
             including the time it takes to read instructions.
             <br /> By answering the following questions, you are participating in a study being performed by cognitive scientists in the Stanford Department of Psychology.
             You must be at least 18 years old to participate. Your participation in this research is voluntary.
