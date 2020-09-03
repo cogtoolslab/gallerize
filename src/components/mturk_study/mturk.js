@@ -90,7 +90,7 @@ class MTurk extends React.Component {
 
         let instruction = <div>
             <p> Here’s how the game will work: </p>
-            <p> On each trial, you will see 50 drawings of a specific category. Your goal is to label all invalid drawings. Invalid drawings include random scribbles, word descriptions, drawings of irrelevant categories and no drawings</p>
+            <p> On each trial, you will see 24 drawings of a specific category. Your goal is to label all invalid drawings. Invalid drawings include random scribbles, word descriptions, drawings of irrelevant categories and no drawings</p>
             <p> Example invalid drawings of category <b>CATS</b>: </p>
             <Layout.Row>
                 <Layout.Col span="8" style={{ textAlign: 'center' }}>
