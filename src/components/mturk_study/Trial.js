@@ -73,9 +73,15 @@ export class Trial extends React.Component {
             this.submit_data = []    
             this.submit_data = {
                 completed: true,
-                workerId: window.turk.workerId,    
+                workerId: window.turk.PROLIFIC_PID,    
             }
-            window.turk.submit(this.submit_data, true)
+            
+            //  for mturk
+            // window.turk.submit(this.submit_data, true)            
+
+
+            //  for prolific
+            window.location.href="https://app.prolific.co/submissions/complete?cc=294B5DC5mmt"
             return;
         }
         if (this.state.classIdx === this.props.allClasses.length - 2) {
@@ -103,7 +109,7 @@ export class Trial extends React.Component {
         let filter = {
             class: curClass,
             num: this.props.num,
-            worker_id: window.turk.workerId,
+            worker_id: window.turk.PROLIFIC_PID,
         };
         this.fetch(filter);
         this.setState({
