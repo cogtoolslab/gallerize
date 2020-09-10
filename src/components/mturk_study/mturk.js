@@ -64,28 +64,29 @@ class MTurk extends React.Component {
             fontSize: '1em'
         }
 
-        let consent = <p>In this HIT, you will view some drawings of various common objects, 
-            such as hats and lamps. Your task is to identify which of these drawings are "invalid."
-            Please keep in mind that even if a drawing is pretty sloppy and does not look pretty, it 
-            is still valid if it looks like the person who made it was at least trying to draw the object. 
+        let consent = <p>In this task, you will view some drawings made BY CHILDREN of various common objects, 
+            such as hats and lamps. Your task is to help us filter to dataset to identify off-task (i.e. "invalid") drawings. 
+            <br />  
+            Please keep in mind that even if a child's drawing is pretty sloppy and does not look pretty, it 
+            is still valid if it looks like the child who made it was at least trying to draw the object. 
+            <br />  
             There are a few ways for a drawing to be considered "invalid," namely: (1) The drawing mainly
-            consists of "scribbles," instead of strokes that aim to depict an object; (2) The canvas is almost
-            entirely blank; (3) The drawing is recognizable, but it is a drawing of something else, other than the target object; 
+            consists of "scribbles"; (2) The canvas is almost entirely blank; (3) The drawing is recognizable, but it is a drawing of something else and it is clear
+            the child was not trying to draw the target object; 
             (4) The drawing contains any words, numbers, arrows, or other symbols that are not part of the object itself; please help us by 
             flagging any inappropriate content as invalid. 
-
-            <br />We expect this hit to take approximately 5 minutes to complete, 
-            including the time it takes to read instructions.
+            <br />
+            <br />  PLEASE EXCLUDE AS FEW DRAWINGS AS POSSIBLE —– unrecognizable drawings are still VALID drawings.
+            <br />
+            <br />We expect this task to take approximately 7 minutes to complete, including the time it takes to read instructions.
             <br /> By answering the following questions, you are participating in a study being performed by cognitive scientists in the Stanford Department of Psychology.
             You must be at least 18 years old to participate. Your participation in this research is voluntary.
             You may decline to answer any or all of the following questions. You may decline further participation, at any time, without adverse consequences.
             Your anonymity is assured; the researchers who have requested your participation will not receive any personal information about you.
-            Note however that we have recently been made aware that your public Amazon.com profile can be accessed via your worker ID if you do not choose to opt out.
-            If you would like to opt out of this feature, you may follow instructions available <a href="https://www.amazon.com/gp/help/customer/display.html?nodeId=16465241">here</a>
             <br />If you encounter a problem or error, send us an email (bria@stanford.edu) 
             and we will make sure you are compensated for your time! Please pay attention and 
             do your best! Thank you!
-            <br />Note: We recommend using Chrome. We have not tested this HIT in other browsers.
+            <br />Note: We recommend using Chrome. We have not tested this task in other browsers.
             </p>
 
         let instruction = <div>
