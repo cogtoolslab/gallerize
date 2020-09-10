@@ -189,7 +189,7 @@ export class Trial extends React.Component {
 
                     <Layout.Row type="flex" justify="center" style={{ padding: '10px', textAlign: "center" }}>
                         <Layout.Col span="12"><h3 style={{ textAlign: "center", top: "30px" }}> <p>Please identify all invalid drawings of <b>{this.props.allClasses[this.state.classIdx]}</b></p> </h3></Layout.Col>
-                        <Layout.Col span="12"><h4 style={{ textAlign: "center", top: "30px" }}> <p>Remember that unrecognizable drawings are still valid drawings. </b></p> </h4></Layout.Col>
+                        <Layout.Col span="12"><h4 style={{ textAlign: "center", top: "30px" }}> <p>Remember that unrecognizable drawings are still valid drawings.</p> </h4></Layout.Col>
 
                         <Layout.Col span="1"><img src={refImg} style={{ width: '60px' }} /></Layout.Col>
                     </Layout.Row>
