@@ -35,6 +35,6 @@ const drawSchema = new Schema({
     timestamps: true,
 });
 
-const Draw = mongoose.model('Draw', drawSchema, 'check_invalid_cdm_run_v6_production');
+const Draw = mongoose.model('Draw', drawSchema, 'check_invalid_cdm_run_v7_production');
 
 module.exports = Draw;
