@@ -10,7 +10,7 @@
     "cors": "^2.8.5",
     "element-react": "^1.4.34",
     "element-theme-default": "^1.4.13",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "gh-pages": "^2.1.1",
     "lodash": "^4.17.15",
     "mongodb": "^3.5.6",
